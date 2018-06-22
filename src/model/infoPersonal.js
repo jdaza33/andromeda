@@ -5,6 +5,7 @@ const INFO_PERSONAL = new Schema({
     name: String,
     lastname: String,
     nit: String,
+    email: String,
     birthdate: Date,
     address: {
         country: String,
@@ -16,5 +17,5 @@ const INFO_PERSONAL = new Schema({
     photo: String
 });
 
-export default mongoose.model('info-personal', INFO_PERSONAL);
+export default mongoose.model('infopersonal', INFO_PERSONAL);
 

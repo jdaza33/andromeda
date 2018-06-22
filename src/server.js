@@ -1,14 +1,11 @@
 import express from 'express'
 import nodemon from 'nodemon'
 import morgan from 'morgan'
-import mongoose from 'mongoose'
 
 const app = express();
 
 //Connect DB
-mongoose.connect('mongodb://localhost/andromeda')
-    .then(db => console.log('Database connect'))
-    .catch(err => console.error(err));
+import db from './db'
 
 //Settings
 app.set('port', process.env.PORT || 3000);
