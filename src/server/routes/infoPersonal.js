@@ -28,6 +28,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     await infoPersonal.findByIdAndRemove(req.params.id);
+    //TODO 
+    // LOS MENSAJES SON DINAMICOS
     res.json({
         status: "Datos eliminados"
     });
