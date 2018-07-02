@@ -2,10 +2,16 @@ import express from 'express'
 import user from '../model/user'
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
     const aux = await (user.find());
     res.json(aux);
 });
+
+router.get('/', async (req, res) => {
+    const aux = await (user.findById(req.user._id));
+    res.json(aux);
+});
+
 
 router.post('/', async (req, res) => {
     const aux = new user(req.body);

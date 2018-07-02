@@ -1,11 +1,17 @@
 import express from 'express'
 import nodemon from 'nodemon'
 import morgan from 'morgan'
+import passport from 'passport'
+import cookieParser from 'cookie-parser'
+
 
 const app = express();
 
 //Connect DB
-import db from '../../config/db'
+import db from './config/db'
+
+//Passport
+require('./config/passport')(passport);
 
 //Settings
 app.set('port', process.env.PORT || 4000);
@@ -15,15 +21,26 @@ app.set('port', process.env.PORT || 4000);
 //Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(passport.initialize());
+app.use(cookieParser());
+
 
 //Routes
 import infopersonal from './routes/infoPersonal'
 import user from './routes/user'
-app.use('/infopersonal', infopersonal);
-app.use('/user', user);
+import auth from './routes/auth'
+import others from './routes/others'
+
+//app.use('/infopersonal', infopersonal);
+app.use('/infopersonal', passport.authenticate('jwt', { session: false }), infopersonal);
+//app.use('/user', user);
+app.use('/user', passport.authenticate('jwt', { session: false }), user);
+app.use('/auth', auth);
+app.use('/others', others);
+
 
 //Files static
-//app.use(express.static(`${__dirname}/public`));
+//app.use(express.static(`../../public/`));
 
 
 

@@ -2,8 +2,13 @@ import express from 'express'
 import infoPersonal from '../model/infoPersonal'
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
     const aux = await (infoPersonal.find());
+    res.json(aux);
+});
+
+router.get('/', async (req, res) => {
+    const aux = await (infoPersonal.findById(req.user.id_infopersonal));
     res.json(aux);
 });
 
