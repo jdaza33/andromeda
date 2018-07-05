@@ -2,12 +2,17 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './routes/router'
 import { store } from './store/store'
+import VueCookie from 'vue-cookie'
+import { sync } from 'vuex-router-sync'
 
 //Vuetify
 import Vuetify from 'vuetify'
 
 //CSS
 import 'vuetify/dist/vuetify.min.css'
+
+//Auth
+import Auth from './components/auth/index'
 
 //Config
 Vue.use(Vuetify, {
@@ -22,8 +27,15 @@ Vue.use(Vuetify, {
   }
 })
 
+Vue.use(VueCookie)
+
+//Sync
+sync(store, router)
+
 //Mode
 Vue.config.productionTip = false
+
+Auth.checkAuthentication()
 
 new Vue({
   router,

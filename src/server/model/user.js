@@ -50,6 +50,6 @@ USER.methods.isValidPassword = async function (password) {
     return compare;
 }
 
-USER.plugin(timestamp)
+USER.plugin(timestamp);
 
 export default mongoose.model('user', USER);

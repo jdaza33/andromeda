@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" fixed app width="200">
+    <v-navigation-drawer v-model="drawer" fixed app width="200" class="blue lighten-3" dark>
 
-      <v-toolbar flat class="transparent">
+      <v-toolbar flat class="transparent" >
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
@@ -19,7 +19,7 @@
 
       <v-list dense>
 
-        <v-list-tile v-for="item in items" :key="item" ripple>
+        <v-list-tile v-for="(item, itemIndex) in items" :key="itemIndex" ripple>
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -35,6 +35,20 @@
     <v-toolbar fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"><v-icon>fas fa-bars</v-icon></v-toolbar-side-icon>
       <v-toolbar-title>Andromeda</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-menu offset-y>
+        <v-btn slot="activator" icon>
+          <v-icon>fas fa-chevron-circle-down</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile v-for="(menu, menuIndex) in menus" :key="menuIndex" @click="logout()">
+            <v-list-tile-title>{{ menu.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      
     </v-toolbar>
 
     <v-content>
@@ -43,14 +57,22 @@
       </v-container>
     </v-content>
 
-    <v-footer app>
-      <span class="black--text">Andromeda - 2018 &copy;</span>
-    </v-footer>
+    <v-footer dark height="auto">
+    <v-card class="flex" flat tile>
+
+      <v-card-actions class="grey darken-3 justify-center">
+        &copy;2018 — <strong>Andromeda</strong>
+      </v-card-actions>
+    </v-card>
+  </v-footer>
 
   </v-app>
 </template>
 
 <script>
+import axios from 'axios'
+import global from '../../config/global.js'
+
 export default {
   data() {
     return {
@@ -59,8 +81,26 @@ export default {
         { title: "Home", icon: "fas fa-home" },
         { title: "Contact", icon: "fas fa-phone" }
       ],
-      right: null
-    };
+      right: null,
+      menus: [
+        {title: 'Cerrar Sesión'}
+      ]
+    }
+  },
+  methods: {
+
+    logout(){
+      axios.get(`${global.path.api}/logout`)
+      .then(res => {
+        if(res.data.res){
+          this.$store.commit('SET_LAYOUT', 'login')
+        }
+      })
+      .catch(err => {
+        alert(err)
+      })
+    }
+
   }
 };
 </script>

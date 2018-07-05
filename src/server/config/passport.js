@@ -60,6 +60,8 @@ module.exports = (passport) => {
         }
     }));
 
+
+
     passport.use(new JWTStrategy({
         secretOrKey: 'blackencio',
         jwtFromRequest: ExtractJWT.fromUrlQueryParameter('tkn')

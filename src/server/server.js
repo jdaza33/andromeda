@@ -3,6 +3,7 @@ import nodemon from 'nodemon'
 import morgan from 'morgan'
 import passport from 'passport'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(cookieParser());
+app.use(cors());
 
 
 //Routes
@@ -37,6 +39,15 @@ app.use('/infopersonal', passport.authenticate('jwt', { session: false }), infop
 app.use('/user', passport.authenticate('jwt', { session: false }), user);
 app.use('/auth', auth);
 app.use('/others', others);
+
+//Logout Passport
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.json({
+        res: true
+    })
+    //res.redirect('/');
+});
 
 
 //Files static
