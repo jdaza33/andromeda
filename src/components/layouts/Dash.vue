@@ -9,7 +9,7 @@
               <img src="https://randomuser.me/api/portraits/men/85.jpg" >
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>José Bolívar</v-list-tile-title>
+              <v-list-tile-title>{{username}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -19,7 +19,7 @@
 
       <v-list dense>
 
-        <v-list-tile v-for="(item, itemIndex) in items" :key="itemIndex" ripple>
+        <v-list-tile v-for="(item, itemIndex) in items" :key="itemIndex" @click="proa()" ripple>
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -53,7 +53,7 @@
 
     <v-content>
       <v-container fluid fill-height>
-        
+        <router-view></router-view>
       </v-container>
     </v-content>
 
@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import global from '../../config/global.js'
+import axios from "../../config/axios.js"
+//import global from '../../config/global.js'
 
 export default {
   data() {
@@ -90,18 +90,30 @@ export default {
   methods: {
 
     logout(){
-      axios.get(`${global.path.api}/logout`)
+      axios.get(`/logout`)
       .then(res => {
         if(res.data.res){
-          this.$store.commit('SET_LAYOUT', 'login')
+          //this.$store.commit('SET_LAYOUT', 'login')
+          //this.$router.push({name: 'login'})
+          this.$cookie.delete('token');
+          location.reload()
         }
       })
       .catch(err => {
         alert(err)
       })
+    },
+
+    go(route) {
+      this.$router.push({name: route})
+    },
+
+    proa(){
+      alert(this.userId)
     }
 
-  }
+  },
+  props: ['userId', 'username']
 };
 </script>
 

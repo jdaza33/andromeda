@@ -48,11 +48,11 @@ module.exports = (passport) => {
         try {
             const user = await UserModel.findOne({ username });
             if (!user) {
-                return done(null, false, { message: 'User not found' });
+                return done(null, false, { err: 'E004' });
             }
             const validate = await user.isValidPassword(password);
             if (!validate) {
-                return done(null, false, { message: 'Wrong Password' });
+                return done(null, false, { err: 'E006' });
             }
             return done(null, user, { message: 'Logged in Successfully' });
         } catch (error) {

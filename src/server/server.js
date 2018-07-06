@@ -46,7 +46,6 @@ app.get('/logout', function (req, res) {
     res.json({
         res: true
     })
-    //res.redirect('/');
 });
 
 

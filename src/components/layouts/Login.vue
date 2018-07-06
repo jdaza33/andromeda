@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../../config/axios.js";
 import global from "../../config/global.js";
 import auth from "../auth/index.js";
 
@@ -80,7 +80,6 @@ export default {
   name: "login",
   data() {
     return {
-      validLogin: false,
       show: 1,
       email: "",
       login: { username: "", password: "" },
@@ -95,7 +94,7 @@ export default {
 
     newUser() {
       axios
-        .post(`${global.path.api}/others/newuser`, this.register)
+        .post(`/others/newuser`, this.register)
         .then(res => {
           if (res.data.res) {
             alert("REGISTRO EXITOSO");

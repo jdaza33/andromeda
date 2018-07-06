@@ -4,6 +4,10 @@ import Home from '@/components/layouts/Home.vue'
 import Login from '@/components/layouts/Login.vue'
 import Dash from '@/components/layouts/Dash.vue'
 import Auth from '../components/auth/index'
+import NProgress from 'nprogress'
+
+NProgress.configure({ showSpinner: false });
+NProgress.configure({ minimum: 0.3 });
 
 Vue.use(Router)
 
@@ -12,14 +16,17 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        isAuth: true
+      }
     },
     {
       path: '/login',
       name: 'login',
       component: Login,
       meta: {
-        requiredAuth: true
+        isAuth: true
       }
     },
     {
@@ -28,13 +35,15 @@ const router = new Router({
       component: Dash,
       meta: {
         requiredAuth: true
-      }
+      },
+      props:true
     }
   ]
 
 })
 
 router.beforeEach((to, from, next) => {
+
   if (to.meta.requiredAuth) {
     if (Auth.user.authenticated) {
       next()
@@ -44,6 +53,33 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+  if (to.meta.isAuth) {
+    if (Auth.user.authenticated) {
+      router.push('/dash')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+
 })
+
+router.beforeResolve((to, from, next) => {
+  // If this isn't an initial page load.
+  if (to.name) {
+    // Start the route progress bar.
+    NProgress.start()
+  }
+  next()
+})
+
+router.afterEach(() => {
+  // Complete the animation of the route progress bar.
+  NProgress.done()
+})
+
+
 
 export default router

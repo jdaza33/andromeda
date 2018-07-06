@@ -1,16 +1,17 @@
 <template>
   <v-app>
-    <component :is="layout"></component>
+    <!--<component :is="layout"></component>-->
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-  import Login from './components/layouts/Login'
-  import Dash from './components/layouts/Dash'
-  import Home from './components/layouts/Home'
+  //import Login from './components/layouts/Login'
+  //import Dash from './components/layouts/Dash'
+  //import Home from './components/layouts/Home'
 
   export default {
-    computed: {
+    /*computed: {
       layout () {
         return this.$store.getters.layout
       }
@@ -19,7 +20,7 @@
       'login': Login,
       'dash': Dash,
       'home': Home
-    }
+    }*/
   }
 </script>
 

@@ -1,24 +1,31 @@
-import Axios from 'axios'
-//import router from '@/routes/router'
-//import global from '@/config/global'
-
-const BudgetManagerAPI = `http://localhost:4000`
+import axios from "../../config/axios.js";
+import router from '@/routes/router'
+//import global from '../../config/global'
+import jwt from 'jsonwebtoken'
 
 export default {
-    user: { authenticated: false },
+    user: { 
+        authenticated: false 
+    },
 
     authenticate(component, credentials, redirect) {
-        Axios.post(`${BudgetManagerAPI}/auth/login`, credentials)
+        axios.post(`/auth/login`, credentials)
             .then(({ data: { token } }) => {
-                component.$cookie.set('token', token, '1D')
-                component.validLogin = true
+                component.$cookie.set('token', token, { expires: 3 }, '1D')
                 this.user.authenticated = true
 
-                //if (redirect) router.push(redirect)
-                component.$store.commit("SET_LAYOUT", redirect)
+                const username = jwt.verify(token, 'blackencio', function (err, decoded) {
+                    return decoded.user.username
+                });
+
+                const userId = jwt.verify(token, 'blackencio', function (err, decoded) {
+                    return decoded.user._id
+                });
+
+                if (redirect) router.push({ name: redirect, params: { userId: userId, username: username}})
+                //component.$store.commit("SET_LAYOUT", redirect)
             }).catch(({ response: { data } }) => {
-                /*component.snackbar = true
-                component.message = data.message*/
+                //TODO
                 alert(data.message)
             })
     },
@@ -39,7 +46,6 @@ export default {
 
     checkAuthentication() {
         const token = document.cookie
-
         if (token) this.user.authenticated = true
         else this.user.authenticated = false
     },

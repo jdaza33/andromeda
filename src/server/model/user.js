@@ -3,6 +3,15 @@ import bcrypt from 'bcrypt'
 import timestamp from 'mongoose-timestamp'
 const Schema = mongoose.Schema
 
+/*
+type_user:
+0 -> Admin
+1 -> Client
+---------------
+rol:
+0 -> All
+*/
+
 const USER = new Schema({
     id_infopersonal: {
         type: String,
@@ -21,7 +30,7 @@ const USER = new Schema({
     },
     type_user: {
         type: Number,
-        default: 0
+        default: 1
     },
     rol: {
         type: Number,

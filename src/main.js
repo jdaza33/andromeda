@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './routes/router'
-import { store } from './store/store'
 import VueCookie from 'vue-cookie'
-import { sync } from 'vuex-router-sync'
+
+//Aux
+//import { store } from './store/store'
+//import { sync } from 'vuex-router-sync'
 
 //Vuetify
 import Vuetify from 'vuetify'
@@ -30,7 +32,7 @@ Vue.use(Vuetify, {
 Vue.use(VueCookie)
 
 //Sync
-sync(store, router)
+//sync(store, router)
 
 //Mode
 Vue.config.productionTip = false
@@ -39,7 +41,6 @@ Auth.checkAuthentication()
 
 new Vue({
   router,
-  store,
   render: h => h(App),
   template: '<App/>'
 }).$mount('#app')

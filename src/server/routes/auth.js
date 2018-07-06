@@ -6,18 +6,26 @@ import passport from 'passport'
 router.post('/login', async (req, res, next) => {
     passport.authenticate('login', async (err, user, info) => {
         try {
-            if (err || !user) {
+            if (err) {
                 const error = new Error('An Error occured')
                 return next(error);
             }
+
+            if (!user) {
+                res.json({
+                    res: false,
+                    err: err.err
+                });
+            }
+
             req.login(user, { session: false }, async (error) => {
                 if (error) return next(error)
                 const body = { _id: user._id, username: user.username };
                 const token = jwt.sign({ user: body }, 'blackencio');
                 return res.json({ token });
             });
-        } catch (error) {
-            return next(error);
+        } catch (e) {
+            return next(e);
         }
     })(req, res, next);
 });
