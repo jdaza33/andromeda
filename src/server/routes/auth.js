@@ -14,7 +14,7 @@ router.post('/login', async (req, res, next) => {
             if (!user) {
                 res.json({
                     res: false,
-                    err: err.err
+                    err: info.err
                 });
             }
 
@@ -22,7 +22,7 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error)
                 const body = { _id: user._id, username: user.username };
                 const token = jwt.sign({ user: body }, 'blackencio');
-                return res.json({ token });
+                return res.json({ token, res: true });
             });
         } catch (e) {
             return next(e);

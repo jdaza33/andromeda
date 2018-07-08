@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <i  v-show="loading" class="fas fa-spinner fa-spin"></i>
     <v-navigation-drawer v-model="drawer" fixed app width="200" class="blue lighten-3" dark>
 
       <v-toolbar flat class="transparent" >
@@ -9,7 +10,7 @@
               <img src="https://randomuser.me/api/portraits/men/85.jpg" >
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>{{username}}</v-list-tile-title>
+              <v-list-tile-title>{{this.userData.username}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -77,6 +78,11 @@ export default {
   data() {
     return {
       drawer: true,
+      loading: false,
+      
+      userData: '',
+      userInfoData: '',
+
       items: [
         { title: "Home", icon: "fas fa-home" },
         { title: "Contact", icon: "fas fa-phone" }
@@ -85,6 +91,7 @@ export default {
       menus: [
         {title: 'Cerrar Sesión'}
       ]
+
     }
   },
   methods: {
@@ -96,6 +103,7 @@ export default {
           //this.$store.commit('SET_LAYOUT', 'login')
           //this.$router.push({name: 'login'})
           this.$cookie.delete('token');
+          this.$cookie.delete('userId');
           location.reload()
         }
       })
@@ -108,12 +116,40 @@ export default {
       this.$router.push({name: route})
     },
 
-    proa(){
-      alert(this.userId)
+    async loadDataUser(){
+
+      //Datos del Usuario
+      await axios.get(`/user/${this.$cookie.get('userId')}`, {
+        headers: { Authorization: "bearer " + this.$cookie.get('token') }
+      })
+      .then(res => {
+        this.userData = res.data.user
+      })
+      .catch(err => {
+        alert(err)
+      })
+
+      //Datos personales del usuario
+      await axios.get(`/infopersonal/${this.userData.id_infopersonal}`, {
+        headers: { Authorization: "bearer " + this.$cookie.get('token') }
+      })
+      .then(res => {
+        this.userInfoData = res.data.infoPersonal
+      })
+      .catch(err => {
+        alert(err)
+      })
+
     }
 
   },
-  props: ['userId', 'username']
+
+  created () {
+    this.loadDataUser()
+  },
+  watch: {
+    '$route': 'loadDataUser'
+  },
 };
 </script>
 

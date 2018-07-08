@@ -74,6 +74,7 @@
 <script>
 import axios from "../../config/axios.js";
 import global from "../../config/global.js";
+import notify from "../../config/notify.js";
 import auth from "../auth/index.js";
 
 export default {
@@ -84,7 +85,7 @@ export default {
       email: "",
       login: { username: "", password: "" },
       register: { name: "", nit: "", email: "", username: "", password: "" },
-      global: global.text_es
+      global: global.text
     };
   },
   methods: {
@@ -97,19 +98,11 @@ export default {
         .post(`/others/newuser`, this.register)
         .then(res => {
           if (res.data.res) {
-            alert("REGISTRO EXITOSO");
+            notify(this,res.data.cod)
             this.show = 1;
             this.clearRegister();
           } else {
-            if (res.data.err == 1) {
-              alert("NIT REGISTRADO");
-            }
-            if (res.data.err == 2) {
-              alert("EMAIL REGISTRADO");
-            }
-            if (res.data.err == 3) {
-              alert("USERNAME REGISTRADO");
-            }
+            notify(this,res.data.err)
           }
         })
         .catch(err => {

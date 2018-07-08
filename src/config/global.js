@@ -1,10 +1,8 @@
-module.exports = {
+const es = true
 
-    path: {
-        api: 'http://localhost:4000'
-    },
+const global_es = {
 
-    text_es: {
+    text: {
 
         title: {
             login: 'Iniciar Sesión',
@@ -26,7 +24,28 @@ module.exports = {
 
     },
 
-    text_en:{
+    success: {
+        'S001': 'El Usuario ha sido creado con exito'
+    },
+
+    warn: {
+
+    },
+
+    error: {
+        'E001': 'El Numero de Identificación que introdujo, ya está registrado',
+        'E002': 'El Correo Electronico que introdujo, ya está registrado',
+        'E003': 'El Usuario que introdujo, ya está registrado',
+        'E004': 'El Usuario que introdujo no existe, verique por favor',
+        'E005': '¡Usuario bloqueado!',
+        'E006': '¡Contraseña incorrecta!'
+    }
+
+}
+
+const global_en = {
+
+    text: {
 
         title: {
             login: 'Login',
@@ -46,51 +65,7 @@ module.exports = {
             email: 'Email'
         }
 
-    },
-
-    success: {
-
-        success_es:{
-            'S001': 'El Usuario ha sido creado con exito'
-        },
-
-        success_em:{
-
-        }
-
-    },
-
-    warning: {
-
-        warning_es: {
-
-        },
-
-        warning_en: {
-
-        }
-
-    },
-
-    error: {
-
-        error_es:{
-            'E001': 'El Numero de Identificación que introdujo, ya está registrado',
-            'E002': 'El Correo Electronico que introdujo, ya está registrado',
-            'E003': 'El Usuario que introdujo, ya está registrado',
-            'E004': 'El Usuario que introdujo no existe, verique por favor',
-            'E005': '¡Usuario bloqueado!',
-            'E006': '¡Contraseña incorrecta!'
-        },
-
-        error_en:{
-            'E001': '',
-            'E002': '',
-            'E003': '',
-            'E004': ''
-        }
-
     }
-
-    
 }
+
+export default es ? global_es : global_en;

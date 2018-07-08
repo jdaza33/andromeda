@@ -4,12 +4,26 @@ const router = express.Router();
 
 router.get('/all', async (req, res) => {
     const aux = await (infoPersonal.find());
-    res.json(aux);
+    res.json({
+        res: true,
+        infoPersonal: aux
+    });
 });
 
-router.get('/', async (req, res) => {
+/*router.get('/', async (req, res) => {
     const aux = await (infoPersonal.findById(req.user.id_infopersonal));
-    res.json(aux);
+    res.json({
+        res: true,
+        infoPersonal: aux
+    });
+});*/
+
+router.get('/:id', async (req, res) => {
+    const aux = await (infoPersonal.findById(req.params.id));
+    res.json({
+        infoPersonal: aux,
+        res: true
+    });
 });
 
 router.post('/', async (req, res) => {
@@ -18,6 +32,7 @@ router.post('/', async (req, res) => {
     //TODO 
     // LOS MENSAJES SON DINAMICOS
     res.json({
+        res: true,
         status: "Datos guardados"
     });
 });
@@ -27,6 +42,7 @@ router.put('/:id', async (req, res) => {
     //TODO 
     // LOS MENSAJES SON DINAMICOS
     res.json({
+        res: true,
         status: "Datos actualizados"
     });
 });
@@ -36,6 +52,7 @@ router.delete('/:id', async (req, res) => {
     //TODO 
     // LOS MENSAJES SON DINAMICOS
     res.json({
+        res: true,
         status: "Datos eliminados"
     });
 });

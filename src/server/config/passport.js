@@ -19,28 +19,6 @@ module.exports = (passport) => {
         });
     });
 
-    /*passport.use('signup', new localStrategy({
-        usernameField: 'username',
-        passwordField: 'password',
-        name: 'name',
-        nit: 'nit',
-        email: 'email'
-    }, async (username, password, name, nit, email, done) => {
-        try {
-            const personal = await InfoPersonalModel.create({ name, nit, email });
-            const user = await UserModel.create({
-                id_infopersonal: personal._id,
-                username,
-                password,
-                ref: personal.nit
-            });
-            return done(null, user);
-        } catch (error) {
-            done(error);
-        }
-    }));*/
-
-
     passport.use('login', new localStrategy({
         usernameField: 'username',
         passwordField: 'password'
@@ -64,7 +42,7 @@ module.exports = (passport) => {
 
     passport.use(new JWTStrategy({
         secretOrKey: 'blackencio',
-        jwtFromRequest: ExtractJWT.fromUrlQueryParameter('tkn')
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
     }, async (token, done) => {
         try {
             //Pass the user details to the next middleware

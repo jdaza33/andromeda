@@ -1,5 +1,4 @@
 import axios from 'axios'
-import global from './global'
 import NProgress from 'nprogress'
 
 NProgress.configure({ showSpinner: false });
@@ -7,7 +6,7 @@ NProgress.configure({ minimum: 0.3 });
 
 // create a new axios instance
 const instance = axios.create({
-    baseURL: global.path.api,
+    baseURL: 'http://localhost:4000',
     timeout: 3000
 })
 

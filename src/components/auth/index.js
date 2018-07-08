@@ -1,6 +1,7 @@
 import axios from "../../config/axios.js";
 import router from '@/routes/router'
-//import global from '../../config/global'
+import notify from '@/config/notify'
+
 import jwt from 'jsonwebtoken'
 
 export default {
@@ -10,39 +11,36 @@ export default {
 
     authenticate(component, credentials, redirect) {
         axios.post(`/auth/login`, credentials)
-            .then(({ data: { token } }) => {
-                component.$cookie.set('token', token, { expires: 3 }, '1D')
-                this.user.authenticated = true
+            .then( res => {
 
-                const username = jwt.verify(token, 'blackencio', function (err, decoded) {
-                    return decoded.user.username
-                });
+                if(res.data.res){
+                    let token = res.data.token
 
-                const userId = jwt.verify(token, 'blackencio', function (err, decoded) {
-                    return decoded.user._id
-                });
+                    component.$cookie.set('token', token, { expires: 3 }, '1D')
+                    this.user.authenticated = true
 
-                if (redirect) router.push({ name: redirect, params: { userId: userId, username: username}})
-                //component.$store.commit("SET_LAYOUT", redirect)
-            }).catch(({ response: { data } }) => {
+                    /*const username = jwt.verify(token, 'blackencio', function (err, decoded) {
+                        return decoded.user.username
+                    });*/
+
+                    const userId = jwt.verify(token, 'blackencio', function (err, decoded) {
+                        return decoded.user._id
+                    });
+
+                    component.$cookie.set('userId', userId)
+                    if (redirect) router.push({ name: redirect })
+
+                }else{
+                    notify(component,res.data.err)
+                }
+
+                
+            })
+            .catch(err => {
                 //TODO
-                alert(data.message)
+                alert(err)
             })
     },
-
-    /*signup(context, credentials, redirect) {
-        Axios.post(`${BudgetManagerAPI}/api/v1/signup`, credentials)
-            .then(({ data: { token } }) => {
-                context.$cookie.set('token', token, '1D')
-                context.validSignUp = true
-                this.user.authenticated = true
-
-                if (redirect) router.push(redirect)
-            }).catch(({ response: { data } }) => {
-                context.snackbar = true
-                context.message = data.message
-            })
-    },*/
 
     checkAuthentication() {
         const token = document.cookie

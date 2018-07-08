@@ -24,7 +24,7 @@ router.post('/newuser', async (req, res, next) => {
             })
         }
 
-        const validateUsername = await (infopersonal.find({ 'username': req.body.username }))
+        const validateUsername = await (user.find({ 'username': req.body.username }))
         if (validateUsername.length > 0) {
             return res.json({
                 res: false,
@@ -51,7 +51,8 @@ router.post('/newuser', async (req, res, next) => {
         await newUser.save();
 
         res.json({
-            res: true
+            res: true,
+            cod: 'S001'
         });
 
     }catch (e){

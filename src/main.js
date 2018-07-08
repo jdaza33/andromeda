@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './routes/router'
 import VueCookie from 'vue-cookie'
+import notify from 'vue-notification'
+import logger from 'vuejs-logger'
 
 //Aux
 //import { store } from './store/store'
@@ -30,6 +32,26 @@ Vue.use(Vuetify, {
 })
 
 Vue.use(VueCookie)
+Vue.use(notify)
+
+const loggerOptions = {
+  // optional : defaults to true if not specified
+  isEnabled: true,
+  // required ['debug', 'info', 'warn', 'error', 'fatal']
+  logLevel: 'debug',
+  // optional : defaults to false if not specified
+  stringifyArguments: false,
+  // optional : defaults to false if not specified
+  showLogLevel: false,
+  // optional : defaults to false if not specified
+  showMethodName: false,
+  // optional : defaults to '|' if not specified
+  separator: '|',
+  // optional : defaults to false if not specified
+  showConsoleColors: false
+}
+
+Vue.use(logger, loggerOptions)
 
 //Sync
 //sync(store, router)

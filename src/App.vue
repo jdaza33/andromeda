@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <!--<component :is="layout"></component>-->
+    <notifications group="notify" position="top center"/>
     <router-view></router-view>
   </v-app>
 </template>
