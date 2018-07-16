@@ -7,12 +7,17 @@ const global_es = {
         title: {
             login: 'Iniciar Sesión',
             register: 'Registro de Usuario',
-            restoreKey: 'Restaurar Clave'
+            restoreKey: 'Restaurar Clave',
+            report: 'Gestión de Reportes',
+            support: 'Gestión de Soportes'
         },
         button: {
             enter: 'Entrar',
             restore: 'Restaurar',
-            save: 'Guardar'
+            save: 'Guardar',
+            new: 'Nuevo',
+            delete: 'Eliminar',
+            cancel: 'Cancelar' 
         },
         input: {
             username: 'Usuario',
@@ -25,7 +30,8 @@ const global_es = {
     },
 
     success: {
-        'S001': 'El Usuario ha sido creado con exito'
+        'S001': 'El Usuario ha sido creado con exito',
+        'S002': 'Solicitud creada con exito'
     },
 
     warn: {
@@ -38,7 +44,8 @@ const global_es = {
         'E003': 'El Usuario que introdujo, ya está registrado',
         'E004': 'El Usuario que introdujo no existe, verique por favor',
         'E005': '¡Usuario bloqueado!',
-        'E006': '¡Contraseña incorrecta!'
+        'E006': '¡Contraseña incorrecta!',
+        'E007': 'Por favor llene todos los campos'
     }
 
 }

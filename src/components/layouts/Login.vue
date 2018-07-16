@@ -1,74 +1,125 @@
 <template>
-   <v-app id="inspire">
-    <v-content>
-      <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
+  <div class="columns" >
 
-            <v-card class="elevation-12" v-if="show==1">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>{{global.title.login}}</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field prepend-icon="fas fa-user" v-model="login.username" name="username" :label="global.input.username" type="text"></v-text-field>
-                  <v-text-field prepend-icon="fas fa-lock" v-model="login.password" name="password" :label="global.input.password" type="password"></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <a @click="changeShow(2)">{{global.title.register}}</a> | 
-                <a @click="changeShow(3)">{{global.title.restoreKey}}</a>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click="loginUser()">{{global.button.enter}}</v-btn>
-              </v-card-actions>
-            </v-card>
+    <div class="column is-one-third" v-if="show==1">
 
-            <v-card class="elevation-12" v-if="show==2">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>{{global.title.register}}</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field prepend-icon="fas fa-user" v-model="register.name" name="name" :label="global.input.name" type="text"></v-text-field>
-                  <v-text-field prepend-icon="fas fa-card" v-model="register.nit" name="nit" :label="global.input.nit" type="text"></v-text-field>
-                  <v-text-field prepend-icon="fas fa-email" v-model="register.email" name="email" :label="global.input.email" type="email"></v-text-field>
-                  <v-text-field prepend-icon="fas fa-user" v-model="register.username" name="username" :label="global.input.username" type="text"></v-text-field>
-                  <v-text-field prepend-icon="fas fa-lock" v-model="register.password" name="password" :label="global.input.password" type="password"></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <a @click="changeShow(1)">{{global.title.login}}</a> | 
-                <a @click="changeShow(3)">{{global.title.restoreKey}}</a>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click="newUser()">{{global.button.save}}</v-btn>
-              </v-card-actions>
-            </v-card>
+      <section class="section">
+        <div class="has-text-centered">
+            <img class="login-logo" src="img/logo.svg">
+        </div>
 
-            <v-card class="elevation-12" v-if="show==3">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>{{global.title.restoreKey}}</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field prepend-icon="fas fa-email" v-model="email" name="email" :label="global.input.email" type="email"></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <a @click="changeShow(1)">{{global.title.login}}</a> | 
-                <a @click="changeShow(2)">{{global.title.register}}</a>
-                <v-spacer></v-spacer>
-                <v-btn color="primary">{{global.button.restore}}</v-btn>
-              </v-card-actions>
-            </v-card>
+        <b-field>
+          <b-input :placeholder="global.input.username"
+                type="text"
+                icon-pack="fas"
+                icon="user"
+                maxlength="12"
+                min="5"
+                v-model="login.username"
+                @keyup.enter.native="loginUser()"
+                rounded>
+            </b-input>
+        </b-field>
 
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-  </v-app>
+        <b-field>
+          <b-input :placeholder="global.input.password"
+                type="password"
+                icon-pack="fas"
+                icon="key"
+                password-reveal
+                v-model="login.password"
+                @keyup.enter.native="loginUser()"
+                rounded>
+            </b-input>
+        </b-field>
+
+        <div class="has-text-centered">
+          <a @click="loginUser()" class="button is-vcentered is-primary is-outlined is-rounded">{{global.title.login}}</a>
+        </div>
+        <div class="has-text-centered">
+          <a @click="changeShow(2)">{{global.title.register}}</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="column is-one-third" v-if="show==2">
+      <section class="section">
+        <div class="has-text-centered">
+            <img class="login-logo" src="img/logo.svg">
+        </div>
+
+        <b-field>
+          <b-input :placeholder="global.input.name"
+                type="text"
+                icon-pack="fas"
+                icon="user-circle"
+                maxlength="20"
+                v-model="register.name"
+                @keyup.enter.native="newUser()"
+                rounded>
+            </b-input>
+        </b-field>
+
+        <b-field>
+          <b-input :placeholder="global.input.nit"
+                type="text"
+                icon-pack="fas"
+                icon="address-card"
+                maxlength="20"
+                v-model="register.nit"
+                @keyup.enter.native="newUser()"
+                rounded>
+            </b-input>
+        </b-field>
+        
+        <b-field>
+          <b-input :placeholder="global.input.email"
+                type="email"
+                icon-pack="fas"
+                icon="at"
+                maxlength="50"
+                v-model="register.email"
+                @keyup.enter.native="newUser()"
+                rounded>
+            </b-input>
+        </b-field>
+
+        <b-field>
+          <b-input :placeholder="global.input.username"
+                type="text"
+                icon-pack="fas"
+                icon="user"
+                maxlength="12"
+                v-model="register.username"
+                @keyup.enter.native="newUser()"
+                rounded>
+            </b-input>
+        </b-field>
+
+        <b-field>
+          <b-input :placeholder="global.input.password"
+                type="password"
+                icon-pack="fas"
+                icon="key"
+                password-reveal
+                v-model="register.password"
+                @keyup.enter.native="newUser()"
+                rounded>
+            </b-input>
+        </b-field>
+
+        <div class="has-text-centered">
+          <a @click="newUser()" class="button is-vcentered is-primary is-outlined is-rounded">{{global.button.save}}</a>
+        </div>
+        <div class="has-text-centered">
+          <a @click="changeShow(1)">{{global.title.login}}</a>
+        </div>
+      </section>
+    </div>
+
+    <div id="particles-js" class="interactive-bg column">
+    </div>
+  </div>
 </template>
 
 <script>
@@ -82,7 +133,6 @@ export default {
   data() {
     return {
       show: 1,
-      email: "",
       login: { username: "", password: "" },
       register: { name: "", nit: "", email: "", username: "", password: "" },
       global: global.text
@@ -94,24 +144,30 @@ export default {
     },
 
     newUser() {
-      axios
-        .post(`/others/newuser`, this.register)
-        .then(res => {
-          if (res.data.res) {
-            notify(this,res.data.cod)
-            this.show = 1;
-            this.clearRegister();
-          } else {
-            notify(this,res.data.err)
-          }
-        })
-        .catch(err => {
-          alert(err);
-        });
+      if (this.validateInput(this.register)) {
+        axios
+          .post(`/others/newuser`, this.register)
+          .then(res => {
+            this.$log.debug(res.data);
+            if (res.data.res) {
+              notify(this, res.data.cod);
+              this.show = 1;
+              this.clearRegister();
+            } else {
+              notify(this, res.data.err);
+            }
+          })
+          .catch(err => {
+            this.$log.debug("hola megan");
+            alert(err);
+          });
+      }
     },
 
     loginUser() {
-      auth.authenticate(this, this.login, "dash");
+      if (this.validateInput(this.login)) {
+        auth.authenticate(this, this.login, "dash");
+      }
     },
 
     clearRegister() {
@@ -120,10 +176,44 @@ export default {
       this.register.nit = "";
       this.register.username = "";
       this.register.password = "";
+    },
+
+    go(route) {
+      this.$router.push({ name: route });
+    },
+
+    validateInput(array) {
+      let aux = false;
+
+      for (let i in array) {
+        if (array[i] == "") {
+          aux = false;
+        } else {
+          aux = true;
+        }
+      }
+
+      if (!aux) {
+        notify(this, "E007");
+      }
+
+      return aux;
     }
+
+
   }
 };
 </script>
+
+<style>
+.login-logo {
+  margin: 0 auto;
+  margin-bottom: 50px;
+  max-height: 150px;
+
+}
+</style>
+
 
 
 

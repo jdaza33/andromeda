@@ -4,6 +4,9 @@ import Home from '@/components/layouts/Home.vue'
 import Login from '@/components/layouts/Login.vue'
 import Dash from '@/components/layouts/Dash.vue'
 import Auth from '../components/auth/index'
+import Supporta from '@/components/views/SupportForAdmin'
+import Supportc from '@/components/views/SupportForClient'
+
 import NProgress from 'nprogress'
 
 NProgress.configure({ showSpinner: false });
@@ -18,7 +21,7 @@ const router = new Router({
       name: 'home',
       component: Home,
       meta: {
-        isAuth: true
+        isAuth: false
       }
     },
     {
@@ -36,7 +39,27 @@ const router = new Router({
       meta: {
         requiredAuth: true
       },
-      props:true
+      props:true,
+      children: [
+        {
+          path: 'supporta',
+          name: 'supporta',
+          component: Supporta,
+          meta:{
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'supportc',
+          name: 'supportc',
+          component: Supportc,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        }
+      ]
     }
   ]
 

@@ -5,34 +5,24 @@ import VueCookie from 'vue-cookie'
 import notify from 'vue-notification'
 import logger from 'vuejs-logger'
 
+//Buefy
+import Buefy from 'buefy'
+
+//CSS Buefy
+import 'buefy/lib/buefy.css'
+
 //Aux
 //import { store } from './store/store'
 //import { sync } from 'vuex-router-sync'
-
-//Vuetify
-import Vuetify from 'vuetify'
-
-//CSS
-import 'vuetify/dist/vuetify.min.css'
 
 //Auth
 import Auth from './components/auth/index'
 
 //Config
-Vue.use(Vuetify, {
-  theme: {
-    primary: "#455A64",
-    secondary: "#304FFE",
-    accent: "#0277BD",
-    error: "#F44336",
-    warning: "#FDD835",
-    info: "#2196f3",
-    success: "#00C853"
-  }
-})
 
 Vue.use(VueCookie)
 Vue.use(notify)
+Vue.use(Buefy)
 
 const loggerOptions = {
   // optional : defaults to true if not specified
@@ -53,6 +43,7 @@ const loggerOptions = {
 
 Vue.use(logger, loggerOptions)
 
+
 //Sync
 //sync(store, router)
 
@@ -63,6 +54,5 @@ Auth.checkAuthentication()
 
 new Vue({
   router,
-  render: h => h(App),
-  template: '<App/>'
+  render: h => h(App)
 }).$mount('#app')

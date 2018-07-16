@@ -33,8 +33,8 @@ const USER = new Schema({
         default: 1
     },
     rol: {
-        type: Number,
-        default: 0
+        type: String,
+        default: 'ALL'
     },
     ref: {
         type: String,

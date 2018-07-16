@@ -32,6 +32,7 @@ import infopersonal from './routes/infoPersonal'
 import user from './routes/user'
 import auth from './routes/auth'
 import others from './routes/others'
+import support from './routes/support'
 
 //app.use('/infopersonal', infopersonal);
 app.use('/infopersonal', passport.authenticate('jwt', { session: false }), infopersonal);
@@ -39,6 +40,7 @@ app.use('/infopersonal', passport.authenticate('jwt', { session: false }), infop
 app.use('/user', passport.authenticate('jwt', { session: false }), user);
 app.use('/auth', auth);
 app.use('/others', others);
+app.use('/support', passport.authenticate('jwt', { session: false }), support);
 
 //Logout Passport
 app.get('/logout', function (req, res) {
