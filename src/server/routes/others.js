@@ -8,6 +8,8 @@ router.post('/newuser', async (req, res, next) => {
     
     try{
 
+        console.log(`Body --> ${req.body}`)
+
         const validateNit = await (infopersonal.find({ 'nit': req.body.nit }))
         if(validateNit.length>0){
             return res.json({
@@ -31,8 +33,6 @@ router.post('/newuser', async (req, res, next) => {
                 err: 'E003'
             })
         }
-
-        console.log(`Body --> ${req.body}`)
 
         const newInfoPersonal = new infopersonal({
             'name': req.body.name,
@@ -61,8 +61,10 @@ router.post('/newuser', async (req, res, next) => {
     
 });
 
-router.post('/newroot', async (res, req) => {
+router.post('/newroot', async (req, res, next) => {
     try {
+
+        console.log(`Body --> ${req.body}`)
 
         const validateNit = await (infopersonal.find({ 'nit': req.body.nit }))
         if (validateNit.length > 0) {
@@ -88,8 +90,6 @@ router.post('/newroot', async (res, req) => {
             })
         }
 
-        console.log(`Body --> ${req.body}`)
-
         const newInfoPersonal = new infopersonal({
             'name': req.body.name,
             'nit': req.body.nit,
@@ -108,7 +108,8 @@ router.post('/newroot', async (res, req) => {
         await newUser.save();
 
         res.json({
-            res: true
+            res: true,
+            cod: 'S001'
         });
 
     }catch(e){

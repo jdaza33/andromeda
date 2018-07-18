@@ -121,14 +121,14 @@ export default {
           url: "users"
         },
         {
-          title: "Reportes",
+          title: "Soporte",
           icon: "clipboard",
           role: false,
           type: "A",
           url: "supporta"
         },
         {
-          title: "Reportes",
+          title: "Soporte",
           icon: "clipboard",
           role: false,
           type: "C",
@@ -149,6 +149,7 @@ export default {
             //this.$router.push({name: 'login'})
             this.$cookie.delete("token");
             this.$cookie.delete("userId");
+            this.$cookie.delete("ref");
             location.reload();
           }
         })
@@ -171,6 +172,7 @@ export default {
         .then(res => {
           this.userData = res.data.user;
           this.preLoading = this.preLoading + 1;
+          this.$cookie.set('ref', this.userData.ref);
         })
         .catch(err => {
           alert(err);

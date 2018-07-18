@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Auth from '../components/auth/index'
+
+//Layouts
 import Home from '@/components/layouts/Home.vue'
 import Login from '@/components/layouts/Login.vue'
 import Dash from '@/components/layouts/Dash.vue'
-import Auth from '../components/auth/index'
+import RegisterRoot from '@/components/layouts/RegisterRoot.vue'
+
+//Views
 import Supporta from '@/components/views/SupportForAdmin'
 import Supportc from '@/components/views/SupportForClient'
 
@@ -20,6 +25,14 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        isAuth: false
+      }
+    },
+    {
+      path: '/newroot',
+      name: 'newroot',
+      component: RegisterRoot,
       meta: {
         isAuth: false
       }

@@ -1,7 +1,7 @@
 <template>
   <div class="columns" >
 
-    <div class="column is-one-third" v-if="show==1">
+    <div class="column is-4" v-if="show==1">
 
       <section class="section">
         <div class="has-text-centered">
@@ -42,7 +42,7 @@
       </section>
     </div>
 
-    <div class="column is-one-third" v-if="show==2">
+    <div class="column is-4" v-if="show==2">
       <section class="section">
         <div class="has-text-centered">
             <img class="login-logo" src="img/logo.svg">
@@ -117,8 +117,8 @@
       </section>
     </div>
 
-    <div id="particles-js" class="interactive-bg column">
-    </div>
+    <!--<div id="particles-js" class="interactive-bg column is-8">
+    </div>-->
   </div>
 </template>
 
@@ -158,7 +158,6 @@ export default {
             }
           })
           .catch(err => {
-            this.$log.debug("hola megan");
             alert(err);
           });
       }
@@ -211,6 +210,26 @@ export default {
   margin-bottom: 50px;
   max-height: 150px;
 
+}
+
+.interactive-bg {
+  height: 100vh;
+  background-color: #00d1b2;
+  -webkit-box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);
+  -moz-box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);
+  box-shadow: inset 24px 4px 64px -24px rgba(71,71,71,1);
+  padding: 0px;
+}
+@media (max-width: 769px) {
+  .interactive-bg{
+    display: none
+  }
+}
+
+.button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-width: 150px;
 }
 </style>
 

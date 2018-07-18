@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
 import timestamp from 'mongoose-timestamp'
 const Schema = mongoose.Schema
 
@@ -23,6 +22,10 @@ const SUPPORT = new Schema({
         required: true
     },
     images: {
+        type: String,
+        default: ''
+    },
+    assigned:{
         type: String,
         default: ''
     },

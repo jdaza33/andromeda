@@ -9,7 +9,9 @@ const global_es = {
             register: 'Registro de Usuario',
             restoreKey: 'Restaurar Clave',
             report: 'Gestión de Reportes',
-            support: 'Gestión de Soportes'
+            support: 'Gestión de Soportes',
+            newsupport: 'Nueva solicitud de soporte',
+            images: 'Imagenes'
         },
         button: {
             enter: 'Entrar',
@@ -17,14 +19,20 @@ const global_es = {
             save: 'Guardar',
             new: 'Nuevo',
             delete: 'Eliminar',
-            cancel: 'Cancelar' 
+            cancel: 'Cancelar',
+            close: 'Cerrar',
+            send: 'Enviar' 
         },
         input: {
             username: 'Usuario',
             password: 'Contraseña',
             name: 'Nombre',
             nit: 'Numero de Identificación',
-            email: 'Correo Electronico'
+            email: 'Correo Electronico',
+            issue: 'Asunto',
+            message: 'Mensaje',
+            description: 'Descripción',
+            upload: '¡Suba sus imagenes aquí!'
         }
 
     },
@@ -45,7 +53,8 @@ const global_es = {
         'E004': 'El Usuario que introdujo no existe, verique por favor',
         'E005': '¡Usuario bloqueado!',
         'E006': '¡Contraseña incorrecta!',
-        'E007': 'Por favor llene todos los campos'
+        'E007': 'Por favor llene todos los campos',
+        'E008': 'Error, intente de nuevo.'
     }
 
 }

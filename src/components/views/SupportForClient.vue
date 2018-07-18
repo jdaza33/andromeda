@@ -5,7 +5,7 @@
             
         </b-field>
         <p class="buttons">
-            <a class="button is-success is-small is-rounded">
+            <a class="button is-success is-small is-rounded" @click="isComponentModalCreateSupportActive = true">
                 <span>{{global.button.new}}</span>
                 <span class="icon is-small">
                 <i class="fas fa-plus"></i>
@@ -18,6 +18,11 @@
                 </span>
             </a>
         </p>
+
+        <b-modal :active.sync="isComponentModalCreateSupportActive" has-modal-card :width="960">
+            <modal-create-support></modal-create-support>
+        </b-modal>
+
         <b-table
             :data="isEmpty ? [] : data"
             :bordered="isBordered"
@@ -83,6 +88,9 @@
 <script>
 
     import global from '@/config/global.js'
+    
+    //Components
+    import ModalCreateSupport from '@/components/views/ModalCreateSupport.vue'
 
     export default {
         data(){
@@ -110,6 +118,8 @@
             ]
             return {
 
+                isComponentModalCreateSupportActive: false,
+
                 global: global.text,
 
                 data,
@@ -131,6 +141,10 @@
                 currentPage: 1,
                 perPage: 8
             }
+        },
+
+        components: {
+            ModalCreateSupport
         }
     }
 </script>

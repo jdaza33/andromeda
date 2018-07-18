@@ -18,6 +18,14 @@ router.get('/:id', async (req, res) => {
     });
 });
 
+router.get('/:ref', async (req, res) => {
+    const aux = await (support.findById(req.params.ref));
+    res.json({
+        support: aux,
+        res: true
+    });
+});
+
 
 router.post('/', async (req, res) => {
     const aux = new support(req.body);
