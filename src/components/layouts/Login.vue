@@ -1,7 +1,7 @@
 <template>
   <div class="columns" >
 
-    <div class="column is-4" v-if="show==1">
+    <div class="column is-one-third" v-if="show==1">
 
       <section class="section">
         <div class="has-text-centered">
@@ -42,7 +42,7 @@
       </section>
     </div>
 
-    <div class="column is-4" v-if="show==2">
+    <div class="column is-one-third" v-if="show==2">
       <section class="section">
         <div class="has-text-centered">
             <img class="login-logo" src="img/logo.svg">
@@ -117,8 +117,8 @@
       </section>
     </div>
 
-    <!--<div id="particles-js" class="interactive-bg column is-8">
-    </div>-->
+    <div id="particles-js" class="interactive-bg column">
+    </div>
   </div>
 </template>
 
@@ -182,21 +182,17 @@ export default {
     },
 
     validateInput(array) {
-      let aux = false;
+        let aux = true;
 
-      for (let i in array) {
-        if (array[i] == "") {
-          aux = false;
-        } else {
-          aux = true;
+        for (let i in array) {
+            if (array[i] == "") {
+            aux = false;
+            notify(this, "E007");
+            return aux;
+            } 
         }
-      }
 
-      if (!aux) {
-        notify(this, "E007");
-      }
-
-      return aux;
+        return aux;
     }
 
 
@@ -204,7 +200,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login-logo {
   margin: 0 auto;
   margin-bottom: 50px;
@@ -231,6 +227,9 @@ export default {
   margin-bottom: 20px;
   min-width: 150px;
 }
+
+
+
 </style>
 
 

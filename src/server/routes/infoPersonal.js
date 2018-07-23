@@ -20,6 +20,7 @@ router.get('/all', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const aux = await (infoPersonal.findById(req.params.id));
+    console.log(req.params.id)
     res.json({
         infoPersonal: aux,
         res: true

@@ -11,7 +11,12 @@ const global_es = {
             report: 'Gestión de Reportes',
             support: 'Gestión de Soportes',
             newsupport: 'Nueva solicitud de soporte',
-            images: 'Imagenes'
+            images: 'Imagenes',
+            details: 'Detalles',
+            date: 'Fecha',
+            status: 'Estado',
+            users: 'Gestión de Usuarios',
+            newuser: 'Nuevo Usuario'
         },
         button: {
             enter: 'Entrar',
@@ -21,7 +26,12 @@ const global_es = {
             delete: 'Eliminar',
             cancel: 'Cancelar',
             close: 'Cerrar',
-            send: 'Enviar' 
+            send: 'Enviar',
+            deselect: 'Deseleccionar',
+            deny: 'Rechazar',
+            approve: 'Aprobar',
+            lock: 'Bloquear',
+            unlock: 'Desbloquear'
         },
         input: {
             username: 'Usuario',
@@ -54,7 +64,8 @@ const global_es = {
         'E005': '¡Usuario bloqueado!',
         'E006': '¡Contraseña incorrecta!',
         'E007': 'Por favor llene todos los campos',
-        'E008': 'Error, intente de nuevo.'
+        'E008': 'Error, intente de nuevo',
+        'E009': 'Error al subir las imagenes, intente de nuevo'
     }
 
 }

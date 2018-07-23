@@ -3,8 +3,9 @@
 
   <nav class="navbar is-transparent">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+      <a class="navbar-item" @click="go('home')">
+        <img src="img/logo.svg" alt="Andromeda" width="50" height="28">
+        <h1 class="title is-5">Andromeda</h1>
       </a>
       <div class="navbar-burger burger" data-target="moreNavbar" @click="burger()">
         <span></span>
@@ -41,7 +42,7 @@
   <div class="columns is-fullheight">
     <div class="column is-2 is-sidebar-menu is-hidden-mobile">
       <div class="container-photo">
-        <img src="https://randomuser.me/api/portraits/men/85.jpg" class="photo">
+        <img src="img/profile_default.svg" class="photo">
         <p class="title is-5 fullname">{{userInfoData.name + ' ' + userInfoData.lastname}}</p>
       </div>
       
@@ -71,7 +72,7 @@
     <div class="column is-main-content">
 
        <b-modal :active.sync="isComponentModalUserActive" has-modal-card :width="960">
-            <modal-user-data></modal-user-data>
+            <modal-user-data :userData="userData" :userInfoData="userInfoData"></modal-user-data>
         </b-modal>
 
       <router-view></router-view>
@@ -93,6 +94,14 @@
 
 <script>
 import axios from "../../config/axios.js";
+import BusEvent from "@/bus.js";
+
+let dataInfopersonal = ''
+
+BusEvent.$on('getInfopersonal', function (aux) {
+  this.$log.debug(dataInfopersonal)
+  return aux
+})
 
 //Components
 import ModalUserData from "../views/ModalUserData.vue";
@@ -150,6 +159,7 @@ export default {
             this.$cookie.delete("token");
             this.$cookie.delete("userId");
             this.$cookie.delete("ref");
+            this.$cookie.delete("type_user");
             location.reload();
           }
         })
@@ -173,6 +183,7 @@ export default {
           this.userData = res.data.user;
           this.preLoading = this.preLoading + 1;
           this.$cookie.set('ref', this.userData.ref);
+          this.$cookie.set('type_user', this.userData.type_user);
         })
         .catch(err => {
           alert(err);
@@ -267,8 +278,10 @@ export default {
       if (this.preLoading == 2) {
         this.isLoading = false;
       }
+      this.go('users')
       
     }
+
   },
 
   created() {

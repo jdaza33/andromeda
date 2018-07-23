@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import passport from 'passport'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import multer from 'multer'
 
 
 const app = express();
@@ -26,6 +27,42 @@ app.use(passport.initialize());
 app.use(cookieParser());
 app.use(cors());
 
+//Upload
+
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/img/uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'img-' + Date.now())
+    }
+});
+
+let upload = multer({ storage: storage })
+
+app.post('/upsupport', upload.array('images', 12), (req, res, next) => {
+    try {
+        console.log(req.files)
+        res.json({
+            res: true,
+            images: req.files
+        })
+    } catch (err) {
+        res.sendStatus(400);
+    }
+})
+
+app.post('/profile', upload.single('profile'), (req, res, next) => {
+    try {
+        console.log(req.file)
+        res.json({
+            res: true,
+            profile: req.file
+        })
+    } catch (err) {
+        res.sendStatus(400);
+    }
+})
 
 //Routes
 import infopersonal from './routes/infoPersonal'

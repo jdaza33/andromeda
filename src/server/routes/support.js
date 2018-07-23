@@ -10,16 +10,9 @@ router.get('/all', async (req, res) => {
     });
 });
 
-router.get('/:id', async (req, res) => {
-    const aux = await (support.findById(req.params.id));
-    res.json({
-        support: aux,
-        res: true
-    });
-});
-
-router.get('/:ref', async (req, res) => {
-    const aux = await (support.findById(req.params.ref));
+router.get('/ref/:ref', async (req, res) => {
+    console.log(req.params.ref)
+    const aux = await (support.find({ ref: req.params.ref}));
     res.json({
         support: aux,
         res: true
@@ -37,7 +30,8 @@ router.post('/', async (req, res) => {
     });
 });
 
-router.put('/:id', async (req, res) => {
+
+router.put('/changestatus/:id', async (req, res) => {
     await support.findByIdAndUpdate(req.params.id, req.body);
     //TODO 
     // LOS MENSAJES SON DINAMICOS
@@ -46,14 +40,6 @@ router.put('/:id', async (req, res) => {
     });
 });
 
-router.delete('/:id', async (req, res) => {
-    await support.findByIdAndRemove(req.params.id);
-    //TODO 
-    // LOS MENSAJES SON DINAMICOS
-    res.json({
-        res: true
-    });
-});
 
 export default router
 

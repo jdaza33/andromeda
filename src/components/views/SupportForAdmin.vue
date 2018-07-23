@@ -1,90 +1,420 @@
 <template>
     <section>
         <b-field grouped group-multiline>
-            <b-select v-model="defaultSortDirection">
-                <option value="asc">Default sort direction: ASC</option>
-                <option value="desc">Default sort direction: DESC</option>
-            </b-select>
-            <b-select v-model="perPage" :disabled="!isPaginated">
-                <option value="5">5 per page</option>
-                <option value="10">10 per page</option>
-                <option value="15">15 per page</option>
-                <option value="20">20 per page</option>
-            </b-select>
-            <div class="control">
-                <button class="button" @click="currentPage = 2" :disabled="!isPaginated">Set page to 2</button>
-            </div>
-            <div class="control is-flex">
-                <b-switch v-model="isPaginated">Paginated</b-switch>
-            </div>
-            <div class="control is-flex">
-                <b-switch v-model="isPaginationSimple" :disabled="!isPaginated">Simple pagination</b-switch>
-            </div>
+            <h2 class="title is-3">{{global.title.support}}</h2>
+            
         </b-field>
 
+        <br>
+        <p class="buttons">
+            <a class="button is-success is-small is-rounded" @click="approve()">
+                <span>{{global.button.approve}}</span>
+                <span class="icon is-small">
+                <i class="fas fa-thumbs-up"></i>
+                </span>
+            </a>
+            <a class="button is-danger is-small is-rounded" @click="deny()">
+                <span>{{global.button.deny}}</span>
+                <span class="icon is-small">
+                <i class="fas fa-times"></i>
+                </span>
+            </a>
+            <a class="button is-info is-small is-rounded" @click="deselect()">
+                <span>{{global.button.deselect}}</span>
+                <span class="icon is-small">
+                <i class="fas fa-bolt"></i>
+                </span>
+            </a>
+        </p>
+
+        <!--Modals-->
+        <b-modal :active.sync="isComponentModalDetailsSupportActive" has-modal-card :width="960">
+            <modal-details-support :dataSupport="data" :nroSupport="nroSupport"></modal-details-support>
+        </b-modal>
+
+        <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
+            <modal-details-client :idClient="idClient"></modal-details-client>
+        </b-modal>
+        <!--End Modals-->
+
         <b-table
-            :data="data"
+            :data="isEmpty ? [] : data"
+            :bordered="isBordered"
+            :striped="isStriped"
+            :narrowed="isNarrowed"
+            :hoverable="isHoverable"
+            :loading="isLoading"
+            :focusable="isFocusable"
+            :mobile-cards="hasMobileCards"
+
+            :selected.sync="selected"
+            
             :paginated="isPaginated"
             :per-page="perPage"
             :current-page.sync="currentPage"
             :pagination-simple="isPaginationSimple"
-            :default-sort-direction="defaultSortDirection"
-            default-sort="user.first_name">
+            :default-sort-direction="defaultSortDirection">
 
             <template slot-scope="props">
-                <b-table-column field="id" label="ID" width="40" sortable numeric>
-                    {{ props.row.id }}
+                <!--<b-table-column field="nro" label="Nro" width="40" centered numeric sortable>
+                    {{ props.row.nro }}
+                </b-table-column>-->
+
+                <b-table-column field="client" label="Cliente" centered sortable>
+                    <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
+                    
+                    <a class="button is-info is-small" @click="loadDetailsClient(props.row.id_client)">
+                        <span class="icon is-small">
+                        <i class="fas fa-user-astronaut"></i>
+                        </span>
+                    </a>
                 </b-table-column>
 
-                <b-table-column field="user.first_name" label="First Name" sortable>
-                    {{ props.row.user.first_name }}
-                </b-table-column>
-
-                <b-table-column field="user.last_name" label="Last Name" sortable>
-                    {{ props.row.user.last_name }}
-                </b-table-column>
-
-                <b-table-column field="date" label="Date" sortable centered>
-                    <span class="tag is-success">
-                        {{ new Date(props.row.date).toLocaleDateString() }}
+                <b-table-column field="date" label="Fecha" centered sortable>
+                    <span class="tag is-primary">
+                        {{ props.row.createdAt.substring(0, 10) }}
                     </span>
                 </b-table-column>
 
-                <b-table-column label="Gender">
+                <b-table-column field="issue" label="Asunto" centered sortable>
+                    {{ props.row.issue }}
+                </b-table-column>
+
+                <!--<b-table-column field="description" label="Descripción" centered sortable>
+                    {{ props.row.description }}
+                </b-table-column>-->
+
+                <!--<b-table-column field="image" label="Imagenes" centered sortable>
+                    {{ props.row.images }}
+                </b-table-column>-->
+
+                <b-table-column field="assigned" label="Asignado" centered sortable>
+                    <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
+                    
+                    <a class="button is-success is-small" @click="loadDetailsClient(props.row.assigned)" v-if="props.row.assigned!=''">
+                        <span class="icon is-small">
+                        <i class="fas fa-user-astronaut"></i>
+                        </span>
+                    </a>
+                    <div v-else>
+                        n/a
+                    </div>
+                    
+                </b-table-column>
+
+                <b-table-column field="status" label="Estado" centered sortable>
+                    <b-tag 
+                    :type="
+                        props.row.status == 'P' ? 'is-warning' : 
+                        props.row.status == 'A' ? 'is-success' : 
+                        props.row.status == 'R' ? 'is-danger' : 'is-dark' ">
+
+                        {{ props.row.status == 'P' ? 'Pendiente' : 
+                        props.row.status == 'A' ? 'Aprobado' : 
+                        props.row.status == 'R' ? 'Rechazado' : 'Cancelado' }}
+                        
+                        </b-tag>
+                </b-table-column>
+
+                <b-table-column field="more" label="Detalles" centered sortable>
+                    <a class="button is-info is-small" @click="loadDetailsSupport(props.row.nro)">
+                        <span class="icon is-small">
+                        <i class="fas fa-info"></i>
+                        </span>
+                    </a>
+                </b-table-column>
+
+                <!--<b-table-column label="Gender" sortable>
                     <b-icon pack="fas"
                         :icon="props.row.gender === 'Male' ? 'mars' : 'venus'">
                     </b-icon>
                     {{ props.row.gender }}
-                </b-table-column>
+                </b-table-column>-->
+            </template>
+
+            <template slot="empty">
+                <section class="section">
+                    <div class="content has-text-grey has-text-centered">
+                        <p>
+                            <b-icon
+                                pack="fas"
+                                icon="frown-open"
+                                size="is-large">
+                            </b-icon>
+                        </p>
+                        <p>Nothing here.</p>
+                    </div>
+                </section>
             </template>
         </b-table>
     </section>
 </template>
 
 <script>
-const data = {
-  "id": "1",
-  "first_name": "jose",
-  "last_name": "daza",
-  "date": "1995-08-02",
-  "gender": "male"
-}
+import global from "@/config/global.js";
+import axios from "@/config/axios.js";
+//import BusEvent from "@/bus.js"
 
-    export default {
-        data(){
-            return {
-                data,
-                isPaginated: true,
-                isPaginationSimple: false,
-                defaultSortDirection: 'asc',
-                currentPage: 1,
-                perPage: 5
+//Components
+import ModalDetailsSupport from "@/components/views/ModalDetailsSupport.vue";
+import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
+
+export default {
+  data() {
+    return {
+      isComponentModalDetailsSupportActive: false,
+      isComponentModalDetailsClientActive: false,
+      idClient: '',
+      nroSupport: '',
+      clients: [],
+
+      global: global.text,
+
+      data: [],
+
+      isEmpty: false,
+      isBordered: false,
+      isStriped: true,
+      isNarrowed: true,
+      isHoverable: true,
+      isFocusable: false,
+      isLoading: false,
+      hasMobileCards: true,
+
+      selected: "",
+
+      isPaginated: true,
+      isPaginationSimple: false,
+      defaultSortDirection: "asc",
+      currentPage: 1,
+      perPage: 7
+    };
+  },
+
+  components: {
+    ModalDetailsSupport,
+    ModalDetailsClient,
+  },
+
+  methods: {
+    listenSon() {
+      this.refreshData();
+    },
+
+    deselect(){
+        this.selected = ''
+    },
+
+    async refreshData() {
+      await axios
+        .get(`/support/all`, {
+            headers: { Authorization: "bearer " + this.$cookie.get("token") }
+        })
+        .then(res => {
+          if (res.data.res) {
+            this.data = res.data.support;
+          }
+        })
+        .catch(err => {
+          alert(err);
+        });
+
+        //await this.loadClients();
+    },
+
+    convertStatus(status){
+        let aux = ''
+        if(status=='P'){
+            aux = {
+                name: 'Pendiente',
+                tag: 'is-warning'
             }
         }
+        if(status=='A'){
+            aux = {
+                name: 'Aprobado',
+                tag: 'is-success'
+            }
+        }
+        if(status=='R'){
+            aux = {
+                name: 'Rechazado',
+                tag: 'is-danger'
+            }
+        }
+        if(status=='C'){
+            aux = {
+                name: 'Cancelado',
+                tag: 'is-dark'
+            }
+        }
+        return aux
+    },
+
+    loadDetailsSupport(nro){
+        this.nroSupport = nro;
+        this.isComponentModalDetailsSupportActive = true;
+
+    },
+
+    async loadClients(){
+        for (let i in this.data){
+            await axios
+            .get(`/infopersonal/${this.data[i].id_client}`, {
+                headers: { Authorization: "bearer " + this.$cookie.get("token") }
+            })
+            .then(res => {
+                if(res.data.res){
+                    this.clients.push(res.data.infoPersonal)
+                }
+            })
+            .catch(err => {
+                alert(err);
+            })
+        }
+    },
+
+    loadDetailsClient(idClient){
+        this.idClient = idClient;
+        this.isComponentModalDetailsClientActive = true;
+    },
+
+    deny(){
+
+        //TODO 
+        /*
+        Quitar el codigo duro que tengo aqui jeje
+        */
+        if(this.selected==''){
+            this.$toast.open({
+                message: 'Seleccione una fila',
+                type: 'is-warning'
+            })
+        }else{
+            if(this.selected.status == 'C'){
+                this.$toast.open({
+                    message: 'La solicitud fue cancelada por el cliente',
+                    type: 'is-warning'
+                })
+            }else if (this.selected.status == 'R'){
+                this.$toast.open({
+                    message: 'La solicitud ya fue rechazada',
+                    type: 'is-warning'
+                })
+            }else{
+                this.$dialog.confirm({
+                    title: 'Rechazar Solicitud',
+                    message: `¿Estás seguro de rechazar la solicitud de soporte nro. #${this.selected.nro}?`,
+                    confirmText: 'Rechazar',
+                    type: 'is-danger',
+                    hasIcon: true,
+                    icon: 'times',
+                    iconPack: 'fas',
+                    onConfirm: async () => {
+                        this.selected.status = 'R'
+                        await axios
+                        .put(`/support/changestatus/${this.selected._id}`, this.selected, {
+                            headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                        })
+                        .then(res => {
+                            if(res.data.res){
+                                this.$toast.open({
+                                    message: 'Solicitud Rechazada',
+                                    type: 'is-success'
+                                })
+                            }
+                        })
+                        .catch(err => {
+                            alert(err)
+                        })
+
+                        await this.refreshData();
+                    }
+                })
+            }
+            
+        }
+        
+    },
+
+
+    approve(){
+
+        //TODO 
+        /*
+        Quitar el codigo duro que tengo aqui jeje
+        */
+        if(this.selected==''){
+            this.$toast.open({
+                message: 'Seleccione una fila',
+                type: 'is-warning'
+            })
+        }else{
+            if(this.selected.status == 'C'){
+                this.$toast.open({
+                    message: 'La solicitud fue cancelada por el cliente',
+                    type: 'is-warning'
+                })
+            }else if (this.selected.status == 'A'){
+                this.$toast.open({
+                    message: 'La solicitud ya fue aprobada',
+                    type: 'is-warning'
+                })
+            }else{
+
+                //let temp = BusEvent.$emit('getInfopersonal', 'hola');
+                
+                this.$dialog.confirm({
+                    title: 'Aprobar Solicitud',
+                    message: `¿Estás seguro de aprobar la solicitud de soporte nro. #${this.selected.nro}?`,
+                    confirmText: 'Aprobar',
+                    type: 'is-success',
+                    hasIcon: true,
+                    icon: 'thumbs-up',
+                    iconPack: 'fas',
+                    onConfirm: async () => {
+                        this.selected.status = 'A'
+                        this.selected.assigned = this.$cookie.get('userId')
+                        await axios
+                        .put(`/support/changestatus/${this.selected._id}`, this.selected, {
+                            headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                        })
+                        .then(res => {
+                            if(res.data.res){
+                                this.$toast.open({
+                                    message: 'Solicitud Aprobada',
+                                    type: 'is-success'
+                                })
+                            }
+                        })
+                        .catch(err => {
+                            alert(err)
+                        })
+
+                        await this.refreshData();
+                    }
+                })
+            }
+            
+        }
+        
     }
+
+  },
+  created() {
+    this.refreshData();
+  },
+  watch: {
+    $route: "refreshData"
+  }
+};
 </script>
 
-<style>
+<style scoped>
+
+.dialog .modal-card {
+    max-height: 200px;
+}
 
 </style>
 

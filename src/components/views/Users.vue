@@ -1,20 +1,26 @@
 <template>
     <section>
         <b-field grouped group-multiline>
-            <h2 class="title is-3">{{global.title.support}}</h2>
+            <h2 class="title is-3">{{global.title.users}}</h2>
             
         </b-field>
 
         <br>
         <p class="buttons">
-            <a class="button is-success is-small is-rounded" @click="isComponentModalCreateSupportActive = true">
+            <a class="button is-success is-small is-rounded" @click="loadCreateNewUser()">
                 <span>{{global.button.new}}</span>
                 <span class="icon is-small">
                 <i class="fas fa-plus"></i>
                 </span>
             </a>
-            <a class="button is-danger is-small is-rounded" @click="cancel()">
-                <span>{{global.button.cancel}}</span>
+            <a class="button is-danger is-small is-rounded" @click="lock()">
+                <span>{{global.button.lock}}</span>
+                <span class="icon is-small">
+                <i class="fas fa-times"></i>
+                </span>
+            </a>
+            <a class="button is-warning is-small is-rounded" @click="unLock()">
+                <span>{{global.button.unlock}}</span>
                 <span class="icon is-small">
                 <i class="fas fa-times"></i>
                 </span>
@@ -28,16 +34,12 @@
         </p>
 
         <!--Modals-->
-        <b-modal :active.sync="isComponentModalCreateSupportActive" has-modal-card :width="960">
-            <modal-create-support @hijo:change="listenSon"></modal-create-support>
-        </b-modal>
-
-        <b-modal :active.sync="isComponentModalDetailsSupportActive" has-modal-card :width="960">
-            <modal-details-support :dataSupport="data" :nroSupport="nroSupport"></modal-details-support>
-        </b-modal>
-
         <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
             <modal-details-client :idClient="idClient"></modal-details-client>
+        </b-modal>
+
+        <b-modal :active.sync="isComponentModalCreateNewUserActive" has-modal-card :width="960">
+            <modal-create-new-user @hijo:change="listenSon"></modal-create-new-user>
         </b-modal>
         <!--End Modals-->
 
@@ -60,70 +62,39 @@
             :default-sort-direction="defaultSortDirection">
 
             <template slot-scope="props">
-                <!--<b-table-column field="nro" label="Nro" width="40" centered numeric sortable>
-                    {{ props.row.nro }}
-                </b-table-column>-->
-
-                <b-table-column field="date" label="Fecha" centered sortable>
-                    <span class="tag is-primary">
-                        {{ props.row.createdAt.substring(0, 10) }}
-                    </span>
-                </b-table-column>
-
-                <b-table-column field="issue" label="Asunto" centered sortable>
-                    {{ props.row.issue }}
-                </b-table-column>
-
-                <!--<b-table-column field="description" label="Descripción" centered sortable>
-                    {{ props.row.description }}
-                </b-table-column>-->
-
-                <!--<b-table-column field="image" label="Imagenes" centered sortable>
-                    {{ props.row.images }}
-                </b-table-column>-->
-
-                 <b-table-column field="assigned" label="Asignado" centered sortable>
+                
+                <b-table-column field="assigned" label="Asignado" centered sortable>
                     <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
                     
-                    <a class="button is-success is-small" @click="loadDetailsClient(props.row.assigned)" v-if="props.row.assigned!=''">
+                    <a class="button is-info is-small" @click="loadDetailsClient(props.row._id)">
                         <span class="icon is-small">
                         <i class="fas fa-user-astronaut"></i>
                         </span>
                     </a>
-                    <div v-else>
-                        n/a
-                    </div>
                     
+                </b-table-column>
+
+                <b-table-column field="date" label="Creado" centered sortable>
+                    <span class="tag is-info">
+                        {{ props.row.createdAt.substring(0, 10) }}
+                    </span>
+                </b-table-column>
+
+                <b-table-column field="username" label="Usuario" centered sortable>
+                    {{ props.row.username }}
+                </b-table-column>
+
+                <b-table-column field="rol" label="Rol" centered sortable>
+                    {{ props.row.rol }}
                 </b-table-column>
 
                 <b-table-column field="status" label="Estado" centered sortable>
                     <b-tag 
-                    :type="
-                        props.row.status == 'P' ? 'is-warning' : 
-                        props.row.status == 'A' ? 'is-success' : 
-                        props.row.status == 'R' ? 'is-danger' : 'is-dark' ">
-
-                        {{ props.row.status == 'P' ? 'Pendiente' : 
-                        props.row.status == 'A' ? 'Aprobado' : 
-                        props.row.status == 'R' ? 'Rechazado' : 'Cancelado' }}
-                        
-                        </b-tag>
+                    :type="props.row.status == true ? 'is-success' : 'is-danger'">
+                    {{ props.row.status == true ? 'Activo' : 'Bloqueado'}}
+                    </b-tag>
                 </b-table-column>
 
-                <b-table-column field="more" label="Detalles" centered sortable>
-                    <a class="button is-info is-small" @click="loadDetailsSupport(props.row.nro)">
-                        <span class="icon is-small">
-                        <i class="fas fa-info"></i>
-                        </span>
-                    </a>
-                </b-table-column>
-
-                <!--<b-table-column label="Gender" sortable>
-                    <b-icon pack="fas"
-                        :icon="props.row.gender === 'Male' ? 'mars' : 'venus'">
-                    </b-icon>
-                    {{ props.row.gender }}
-                </b-table-column>-->
             </template>
 
             <template slot="empty">
@@ -149,17 +120,14 @@ import global from "@/config/global.js";
 import axios from "@/config/axios.js";
 
 //Components
-import ModalCreateSupport from "@/components/views/ModalCreateSupport.vue";
-import ModalDetailsSupport from "@/components/views/ModalDetailsSupport.vue";
 import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
+import ModalCreateNewUser from "@/components/views/ModalCreateNewUser.vue";
 
 export default {
   data() {
     return {
-      isComponentModalCreateSupportActive: false,
-      isComponentModalDetailsSupportActive: false,
       isComponentModalDetailsClientActive: false,
-      nroSupport: '',
+      isComponentModalCreateNewUserActive: false,
 
       global: global.text,
 
@@ -185,9 +153,8 @@ export default {
   },
 
   components: {
-    ModalCreateSupport,
-    ModalDetailsSupport,
-    ModalDetailsClient
+    ModalDetailsClient,
+    ModalCreateNewUser
   },
 
   methods: {
@@ -201,12 +168,12 @@ export default {
 
     async refreshData() {
       await axios
-        .get(`/support/ref/${this.$cookie.get("ref")}`, {
+        .get(`/user/ref/${this.$cookie.get("ref")}`, {
             headers: { Authorization: "bearer " + this.$cookie.get("token") }
         })
         .then(res => {
           if (res.data.res) {
-            this.data = res.data.support;
+            this.data = res.data.user;
             
           }
         })
@@ -215,47 +182,17 @@ export default {
         });
     },
 
-    convertStatus(status){
-        let aux = ''
-        if(status=='P'){
-            aux = {
-                name: 'Pendiente',
-                tag: 'is-warning'
-            }
-        }
-        if(status=='A'){
-            aux = {
-                name: 'Aprobado',
-                tag: 'is-success'
-            }
-        }
-        if(status=='R'){
-            aux = {
-                name: 'Rechazado',
-                tag: 'is-danger'
-            }
-        }
-        if(status=='C'){
-            aux = {
-                name: 'Cancelado',
-                tag: 'is-dark'
-            }
-        }
-        return aux
-    },
-
-    loadDetailsSupport(nro){
-        this.nroSupport = nro;
-        this.isComponentModalDetailsSupportActive = true;
-
-    },
 
     loadDetailsClient(idClient){
         this.idClient = idClient;
         this.isComponentModalDetailsClientActive = true;
     },
 
-    cancel(){
+    loadCreateNewUser(){
+        this.isComponentModalCreateNewUserActive = true;
+    },
+
+    lock(){
 
         //TODO 
         /*
@@ -268,23 +205,23 @@ export default {
             })
         }else{
             this.$dialog.confirm({
-                title: 'Cancelar solicitud',
-                message: `¿Estás seguro de cancelar la solicitud de soporte nro. #${this.selected.nro}?`,
-                confirmText: 'Cancelar',
+                title: 'Bloquear Usuario',
+                message: `¿Estás seguro de bloquear el usuario: ${this.selected.username}?`,
+                confirmText: 'Bloquear',
                 type: 'is-danger',
                 hasIcon: true,
-                icon: 'times',
+                icon: 'lock',
                 iconPack: 'fas',
                 onConfirm: async () => {
-                    this.selected.status = 'C'
+                    this.selected.status = false
                     await axios
-                    .put(`/support/changestatus/${this.selected._id}`, this.selected, {
+                    .put(`/user/changestatus/${this.selected._id}`, this.selected, {
                         headers: { Authorization: "bearer " + this.$cookie.get("token") }
                     })
                     .then(res => {
                         if(res.data.res){
                             this.$toast.open({
-                                message: 'Solicitud Cancelada',
+                                message: 'Usuario Bloqueado',
                                 type: 'is-success'
                             })
                         }
@@ -298,7 +235,51 @@ export default {
             })
         }
         
+    },
 
+
+    unLock(){
+
+        //TODO 
+        /*
+        Quitar el codigo duro que tengo aqui jeje
+        */
+        if(this.selected==''){
+            this.$toast.open({
+                message: 'Seleccione una fila',
+                type: 'is-warning'
+            })
+        }else{
+            this.$dialog.confirm({
+                title: 'Desbloquear Usuario',
+                message: `¿Estás seguro de desbloquear el usuario: ${this.selected.username}?`,
+                confirmText: 'Desbloquear',
+                type: 'is-warning',
+                hasIcon: true,
+                icon: 'unlock',
+                iconPack: 'fas',
+                onConfirm: async () => {
+                    this.selected.status = true
+                    await axios
+                    .put(`/user/changestatus/${this.selected._id}`, this.selected, {
+                        headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                    })
+                    .then(res => {
+                        if(res.data.res){
+                            this.$toast.open({
+                                message: 'Usuario Desbloqueado',
+                                type: 'is-success'
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        alert(err)
+                    })
+
+                    await this.refreshData();
+                }
+            })
+        }
         
     }
 

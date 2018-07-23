@@ -11,6 +11,7 @@ import RegisterRoot from '@/components/layouts/RegisterRoot.vue'
 //Views
 import Supporta from '@/components/views/SupportForAdmin'
 import Supportc from '@/components/views/SupportForClient'
+import Users from '@/components/views/Users'
 
 import NProgress from 'nprogress'
 
@@ -67,6 +68,15 @@ const router = new Router({
           path: 'supportc',
           name: 'supportc',
           component: Supportc,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'users',
+          name: 'users',
+          component: Users,
           meta: {
             requiredRol: true,
             requiredAuth: true
