@@ -5,6 +5,7 @@ import passport from 'passport'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import multer from 'multer'
+import serveStatic from 'serve-static'
 
 
 const app = express();
@@ -89,7 +90,8 @@ app.get('/logout', function (req, res) {
 
 
 //Files static
-app.use(express.static(`../../dist/`));
+//app.use(express.static(`../../dist/`));
+app.use(serveStatic('../../dist'));
 
 
 
