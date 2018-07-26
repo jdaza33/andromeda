@@ -278,7 +278,7 @@ export default {
       if (this.preLoading == 2) {
         this.isLoading = false;
       }
-      this.go('users')
+      //this.go('users')
       
     }
 
