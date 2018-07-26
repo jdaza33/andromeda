@@ -89,7 +89,7 @@ app.get('/logout', function (req, res) {
 
 
 //Files static
-//app.use(express.static(`../../public/`));
+app.use(express.static(`../../dist/`));
 
 
 
