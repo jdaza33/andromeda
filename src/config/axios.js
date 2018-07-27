@@ -4,9 +4,11 @@ import NProgress from 'nprogress'
 NProgress.configure({ showSpinner: false });
 NProgress.configure({ minimum: 0.3 });
 
+const port = process.env.API_URL || 'http://localhost:4000';
+
 // create a new axios instance
 const instance = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: port,
     timeout: 3000
 })
 
