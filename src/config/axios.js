@@ -1,4 +1,5 @@
 import axios from 'axios'
+require('dotenv').config();
 import NProgress from 'nprogress'
 
 NProgress.configure({ showSpinner: false });
