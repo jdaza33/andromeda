@@ -42,7 +42,7 @@
   <div class="columns is-fullheight">
     <div class="column is-2 is-sidebar-menu is-hidden-mobile">
       <div class="container-photo">
-        <img src="img/profile_default.svg" class="photo">
+        <img :src="userInfoData.photo == '' ? 'img/profile_default.svg' : 'img/profile/' + userInfoData.photo" class="photo">
         <p class="title is-5 fullname">{{userInfoData.name + ' ' + userInfoData.lastname}}</p>
       </div>
       

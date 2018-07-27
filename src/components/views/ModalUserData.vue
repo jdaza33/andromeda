@@ -200,7 +200,7 @@
 
     <footer class="modal-card-foot foot">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">Close</button>
-        <button class="button is-primary is-rounded">Guardar</button>
+        <button class="button is-primary is-rounded" @click="saveData()">Guardar</button>
     </footer>
     
     
@@ -227,7 +227,9 @@ import FormData from "form-data";
                 infoUser: '',
                 global: global.text,
                 isProfile: false,
-                profile: ''
+                profile: '',
+
+                tempPassword: ''
             }
         },
         props: ['userData', 'userInfoData'],
@@ -239,6 +241,7 @@ import FormData from "form-data";
                 if(this.userInfoData.photo != ''){
                     this.isProfile = true;
                 }
+                this.infoUser.password = this.tempPassword
                 this.infoUser.password = ''
             },
 
@@ -270,6 +273,55 @@ import FormData from "form-data";
                     this.$log.debug(err);
                 });
                 return aux;
+            },
+
+            async saveData(){
+                
+                if(this.profile != ''){
+                    let tempProfile = await this.uploadProfile();
+                    this.infoPersonal.photo = tempProfile;
+                }
+                
+                if(this.infoPersonal.password == ''){
+                    this.infoPersonal.password = this.tempPassword
+                }
+
+                let operation = false;
+
+                await axios
+                .put(`/infopersonal/${this.infoPersonal._id}`, this.infoPersonal, {
+                    headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                })
+                .then(res => {
+                    if(res.data.res){
+                        operation = true;
+                    }else{
+                        operation = false;
+                    }
+                })
+                .catch(err => {
+                    alert(err)
+                });
+
+                await axios
+                .put(`/user/${this.infoUser._id}`, this.infoUser, {
+                    headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                })
+                .then(res => {
+                    if(res.data.res){
+                        if(operation){
+                            notify(this, 'S003')
+                            this.$parent.close();
+                        }
+                    }else{
+                        notify(this, 'E008')
+                    }
+                })
+                .catch(err => {
+                    alert(err)
+                });
+
+
             }
 
 

@@ -39,7 +39,17 @@ let storage = multer.diskStorage({
     }
 });
 
+let storageProfile = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/img/profile')
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'img-' + Date.now())
+    }
+});
+
 let upload = multer({ storage: storage })
+let uploadProfile = multer({ storage: storageProfile })
 
 app.post('/upsupport', upload.array('images', 12), (req, res, next) => {
     try {
@@ -53,7 +63,7 @@ app.post('/upsupport', upload.array('images', 12), (req, res, next) => {
     }
 })
 
-app.post('/profile', upload.single('profile'), (req, res, next) => {
+app.post('/profile', uploadProfile.single('profile'), (req, res, next) => {
     try {
         console.log(req.file)
         res.json({
@@ -92,6 +102,9 @@ app.get('/logout', function (req, res) {
 //Files static
 //app.use(express.static(`../../dist/`));
 app.use(serveStatic('../../dist'));
+app.get(/.*/, (req, res ) => {
+    res.sendFile('../../dist/index.html')
+})
 
 
 

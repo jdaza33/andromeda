@@ -53,6 +53,13 @@ USER.pre('save', async function (next) {
     next();
 });
 
+/*USER.pre('update', async function (next) {
+    const user = this;
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+    next();
+});*/
+
 USER.methods.isValidPassword = async function (password) {
     const user = this;
     const compare = await bcrypt.compare(password, user.password);
