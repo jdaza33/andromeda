@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "babel-node": "babel-node --presets=latest",
-    "start": "npm run babel-node src/server/server.js",
+    "start": "node server_vue.js",
+    "startt": "npm run babel-node src/server/server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
