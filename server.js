@@ -1,10 +1,14 @@
 const express = require('express');
-//require('dotenv').config();
+const multer = require('multer')
+
 const port = process.env.PORT || 8080;
+
 const app = express();
 
+//Static
 app.use(express.static(__dirname + '/dist/'));
+
+//Output
 app.listen(port);
 
-console.log('Server vue iniciado');
-console.log(process.env.VUE_APP_API_URL)
+console.log('Server Vue iniciado');

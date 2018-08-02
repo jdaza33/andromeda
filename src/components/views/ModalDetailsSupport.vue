@@ -46,7 +46,7 @@
             <hr>
             <div v-show="isImg">
                 <figure class="image is-4by3" v-for="(item, index) in images" :key="index">
-                    <img :src="item.substring(7,item.length)">
+                    <img :src="api + '/uploads/support/' + item">
                 </figure>
             </div>
             
@@ -76,7 +76,8 @@ import global from "@/config/global.js";
                 images_support: [],
                 data: '',
                 images: [],
-                isImg: false
+                isImg: false,
+                api: process.env.VUE_APP_API_URL
                 
             }
         },

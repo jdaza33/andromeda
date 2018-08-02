@@ -42,7 +42,7 @@
   <div class="columns is-fullheight">
     <div class="column is-2 is-sidebar-menu is-hidden-mobile">
       <div class="container-photo">
-        <img :src="userInfoData.photo == '' ? 'img/profile_default.svg' : 'img/profile/' + userInfoData.photo" class="photo">
+        <img :src="userInfoData.photo == '' ? 'img/profile_default.svg' : api + '/uploads/profile/' + userInfoData.photo" class="photo">
         <p class="title is-5 fullname">{{userInfoData.name + ' ' + userInfoData.lastname}}</p>
       </div>
       
@@ -119,6 +119,7 @@ export default {
 
       userData: "",
       userInfoData: "",
+      api: process.env.VUE_APP_API_URL,
 
       items: [
         { title: "Home", icon: "home", role: true, type: "ALL", url: "home" },
@@ -131,17 +132,31 @@ export default {
         },
         {
           title: "Soporte",
-          icon: "clipboard",
+          icon: "wrench",
           role: false,
           type: "A",
           url: "supporta"
         },
         {
           title: "Soporte",
-          icon: "clipboard",
+          icon: "wrench",
           role: false,
           type: "C",
           url: "supportc"
+        },
+        {
+          title: "Reporte",
+          icon: "clipboard",
+          role: false,
+          type: "A",
+          url: "report"
+        },
+        {
+          title: "Calendar",
+          icon: "calendar-alt",
+          role: false,
+          type: "ALL",
+          url: "calendar"
         }
       ],
       right: null,
@@ -160,6 +175,7 @@ export default {
             this.$cookie.delete("userId");
             this.$cookie.delete("ref");
             this.$cookie.delete("type_user");
+            this.$cookie.delete("infopersonalId");
             location.reload();
           }
         })
@@ -197,6 +213,7 @@ export default {
         .then(res => {
           this.userInfoData = res.data.infoPersonal;
           this.preLoading = this.preLoading + 1;
+          this.$cookie.set('infopersonalId', this.userInfoData._id);
         })
         .catch(err => {
           alert(err);
@@ -332,7 +349,7 @@ export default {
   box-shadow: 9px 10px 46px -6px rgba(74, 74, 74, 0.84);
   margin: 80px 20px 20px 20px;
   position: fixed;
-  max-height: 380px;
+  max-height: auto;
   z-index: 2;
 }
 

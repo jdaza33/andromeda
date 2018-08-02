@@ -11,7 +11,9 @@ import RegisterRoot from '@/components/layouts/RegisterRoot.vue'
 //Views
 import Supporta from '@/components/views/SupportForAdmin'
 import Supportc from '@/components/views/SupportForClient'
+import Report from '@/components/views/ReportForAdmin'
 import Users from '@/components/views/Users'
+import Calendar from '@/components/views/Calendar'
 
 import NProgress from 'nprogress'
 
@@ -77,6 +79,24 @@ const router = new Router({
           path: 'users',
           name: 'users',
           component: Users,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'report',
+          name: 'report',
+          component: Report,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'calendar',
+          name: 'calendar',
+          component: Calendar,
           meta: {
             requiredRol: true,
             requiredAuth: true

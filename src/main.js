@@ -4,6 +4,12 @@ import router from './routes/router'
 import VueCookie from 'vue-cookie'
 import notify from 'vue-notification'
 import logger from 'vuejs-logger'
+import vueEventCalendar from 'vue-event-calendar'
+
+
+//Calendar
+import 'vue-event-calendar/dist/style.css' 
+
 
 //Buefy
 import Buefy from 'buefy'
@@ -23,6 +29,9 @@ import Auth from './components/auth/index'
 Vue.use(VueCookie)
 Vue.use(notify)
 Vue.use(Buefy)
+
+//Calendar
+Vue.use(vueEventCalendar, { locale: 'en' }) 
 
 const loggerOptions = {
   // optional : defaults to true if not specified

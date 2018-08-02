@@ -35,10 +35,6 @@
         <b-modal :active.sync="isComponentModalDetailsSupportActive" has-modal-card :width="960">
             <modal-details-support :dataSupport="data" :nroSupport="nroSupport"></modal-details-support>
         </b-modal>
-
-        <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
-            <modal-details-client :idClient="idClient"></modal-details-client>
-        </b-modal>
         <!--End Modals-->
 
         <b-table
@@ -158,7 +154,6 @@ export default {
     return {
       isComponentModalCreateSupportActive: false,
       isComponentModalDetailsSupportActive: false,
-      isComponentModalDetailsClientActive: false,
       nroSupport: '',
 
       global: global.text,
@@ -248,11 +243,6 @@ export default {
         this.nroSupport = nro;
         this.isComponentModalDetailsSupportActive = true;
 
-    },
-
-    loadDetailsClient(idClient){
-        this.idClient = idClient;
-        this.isComponentModalDetailsClientActive = true;
     },
 
     cancel(){

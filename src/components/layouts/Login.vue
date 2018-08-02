@@ -1,12 +1,14 @@
 <template>
   <div class="columns" >
 
-    <div class="column is-one-third" v-if="show==1">
+    <div class="column is-one-third master" v-if="show==1">
 
       <section class="section">
-        <div class="has-text-centered">
+        <!--<div class="has-text-centered">
             <img class="login-logo" src="img/logo.svg">
-        </div>
+        </div>-->
+
+        <p class="title is-3 has-text-centered">¡Bienvenido!</p>
 
         <b-field>
           <b-input :placeholder="global.input.username"
@@ -42,12 +44,14 @@
       </section>
     </div>
 
-    <div class="column is-one-third" v-if="show==2">
+    <div class="column is-one-third master" v-if="show==2">
       <section class="section">
-        <div class="has-text-centered">
+        <!--<div class="has-text-centered">
             <img class="login-logo" src="img/logo.svg">
-        </div>
+        </div>-->
 
+        <p class="title is-3 has-text-centered">¡Únete!</p>
+        
         <b-field>
           <b-input :placeholder="global.input.name"
                 type="text"
@@ -117,7 +121,9 @@
       </section>
     </div>
 
-    <div id="particles-js" class="interactive-bg column">
+    <!--id="particles-js"-->
+    <div  class="interactive-bg column master submaster">
+      <img class="login-logo" src="img/logo.svg">
     </div>
   </div>
 </template>
@@ -201,11 +207,43 @@ export default {
 </script>
 
 <style scoped>
-.login-logo {
-  margin: 0 auto;
-  margin-bottom: 50px;
-  max-height: 150px;
 
+
+.master{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submaster{
+  background-image: url("/img/2144.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+@keyframes animar{
+    from{
+      transform: scale(0.8);
+    }
+    to{
+      transform : scale(1.1);
+    }
+  }
+
+animar{
+  
+}
+
+.login-logo {
+  width: 250px;
+
+  animation-duration: 5s;
+  animation-name: animar;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+  animation-direction: alternate;
+  
 }
 
 .interactive-bg {

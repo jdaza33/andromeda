@@ -100,27 +100,27 @@ export default {
       this.support.images = await this.uploadImages();
 
       await axios
-                .post('/support',this.support,
-                { 
-                    headers: 
-                    { 
-                        Authorization: "bearer " + this.$cookie.get("token") 
-                        }
-                    }
-                )
-                .then(res => {
-                    this.$log.debug(res.data);
-                    if (res.data.res) {
-                    notify(this, 'S002');
-                    this.$emit('hijo:change') //Envio el mensaje al componente padre para que actualice la tabla
-                    this.$parent.close() //Cierro el modal
-                    } else {
-                    notify(this, 'E008');
-                    }
-                })
-                .catch(err => {
-                    alert(err);
-                })
+        .post('/support',this.support,
+        { 
+            headers: 
+            { 
+                Authorization: "bearer " + this.$cookie.get("token") 
+                }
+            }
+        )
+        .then(res => {
+            this.$log.debug(res.data);
+            if (res.data.res) {
+            notify(this, 'S002');
+            this.$emit('hijo:change') //Envio el mensaje al componente padre para que actualice la tabla
+            this.$parent.close() //Cierro el modal
+            } else {
+            notify(this, 'E008');
+            }
+        })
+        .catch(err => {
+            alert(err);
+        })
     },
 
     generateNro() {
@@ -151,9 +151,9 @@ export default {
             if (res.data.res) {
                 for (let i in res.data.images) {
                     if(i==0){
-                        aux = res.data.images[i].path;
+                        aux = res.data.images[i].filename;
                     }else{
-                        aux = aux + '|' + res.data.images[i].path;
+                        aux = aux + '|' + res.data.images[i].filename;
                     }
                 }
             }

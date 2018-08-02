@@ -2,7 +2,7 @@
 <div class="modal-card">
 
     <header class="modal-card-head has-text-centered">
-        <p class="modal-card-title">Cuenta</p>
+        <p class="modal-card-title">NIT: {{infoPersonal.nit}}</p>
     </header>
 
     <section class="modal-card-body">
@@ -36,7 +36,7 @@
                             </b-input>
                         </b-field>
 
-                        <b-field>
+                        <!--<b-field>
                             <b-input :placeholder="global.input.nit"
                                 type="text"
                                 icon-pack="fas"
@@ -46,7 +46,7 @@
                                 rounded
                                 disabled>
                             </b-input>
-                        </b-field>
+                        </b-field>-->
 
                         <b-field>
                             <b-input :placeholder="global.input.email"
@@ -59,12 +59,23 @@
                             </b-input>
                         </b-field>
 
+                        <b-field>
+                            <b-input :placeholder="global.input.phone"
+                                type="text"
+                                icon-pack="fas"
+                                icon="phone"
+                                maxlength="20"
+                                v-model="infoPersonal.phone"
+                                rounded>
+                            </b-input>
+                        </b-field>
+
                     </div>
 
                     <div class="column is-6">
                         <div v-if="isProfile">
                             <figure class="image is-96x96">
-                                <img :src="'img/profile/' + infoPersonal.photo">
+                                <img :src="api + '/uploads/profile/' + infoPersonal.photo">
                             </figure>
                         </div>
                         <div v-else>
@@ -189,7 +200,8 @@
                         icon="key"
                         password-reveal
                         v-model="infoUser.password"
-                        rounded>
+                        rounded
+                        disabled>
                     </b-input>
                 </b-field>
 
@@ -228,8 +240,7 @@ import FormData from "form-data";
                 global: global.text,
                 isProfile: false,
                 profile: '',
-
-                tempPassword: ''
+                api: process.env.VUE_APP_API_URL
             }
         },
         props: ['userData', 'userInfoData'],
@@ -241,8 +252,8 @@ import FormData from "form-data";
                 if(this.userInfoData.photo != ''){
                     this.isProfile = true;
                 }
-                this.infoUser.password = this.tempPassword
-                this.infoUser.password = ''
+                //this.infoUser.password = this.tempPassword
+                //this.infoUser.password = ''
             },
 
             handleFileUpload(){
@@ -258,7 +269,7 @@ import FormData from "form-data";
                 let aux = '';
 
                 await axios
-                .post("/profile", data, {
+                .post("/upprofile", data, {
                     headers: {
                     "Content-Type": "multipart/form-data"
                     }
@@ -282,9 +293,9 @@ import FormData from "form-data";
                     this.infoPersonal.photo = tempProfile;
                 }
                 
-                if(this.infoPersonal.password == ''){
+                /*if(this.infoPersonal.password == ''){
                     this.infoPersonal.password = this.tempPassword
-                }
+                }*/
 
                 let operation = false;
 
@@ -312,6 +323,7 @@ import FormData from "form-data";
                         if(operation){
                             notify(this, 'S003')
                             this.$parent.close();
+                            location.reload();
                         }
                     }else{
                         notify(this, 'E008')

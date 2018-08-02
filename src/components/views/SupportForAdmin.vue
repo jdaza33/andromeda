@@ -35,6 +35,10 @@
         <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
             <modal-details-client :idClient="idClient"></modal-details-client>
         </b-modal>
+
+        <b-modal :active.sync="isComponentModalAssignSupportActive" has-modal-card :width="960">
+            <modal-assign-support @hijo:change="listenSon" :support="selected"></modal-assign-support>
+        </b-modal>
         <!--End Modals-->
 
         <b-table
@@ -158,12 +162,14 @@ import axios from "@/config/axios.js";
 //Components
 import ModalDetailsSupport from "@/components/views/ModalDetailsSupport.vue";
 import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
+import ModalAssignSupport from "@/components/views/ModalAssignSupport.vue";
 
 export default {
   data() {
     return {
       isComponentModalDetailsSupportActive: false,
       isComponentModalDetailsClientActive: false,
+      isComponentModalAssignSupportActive: false,
       idClient: '',
       nroSupport: '',
       clients: [],
@@ -194,6 +200,7 @@ export default {
   components: {
     ModalDetailsSupport,
     ModalDetailsClient,
+    ModalAssignSupport
   },
 
   methods: {
@@ -254,7 +261,10 @@ export default {
     loadDetailsSupport(nro){
         this.nroSupport = nro;
         this.isComponentModalDetailsSupportActive = true;
+    },
 
+    showAssignSupport(){
+        this.isComponentModalAssignSupportActive = true;
     },
 
     async loadClients(){
@@ -373,25 +383,10 @@ export default {
                     icon: 'thumbs-up',
                     iconPack: 'fas',
                     onConfirm: async () => {
-                        this.selected.status = 'A'
-                        this.selected.assigned = this.$cookie.get('userId')
-                        await axios
-                        .put(`/support/changestatus/${this.selected._id}`, this.selected, {
-                            headers: { Authorization: "bearer " + this.$cookie.get("token") }
-                        })
-                        .then(res => {
-                            if(res.data.res){
-                                this.$toast.open({
-                                    message: 'Solicitud Aprobada',
-                                    type: 'is-success'
-                                })
-                            }
-                        })
-                        .catch(err => {
-                            alert(err)
-                        })
+                        this.showAssignSupport();
+                       
 
-                        await this.refreshData();
+                        //await this.refreshData();
                     }
                 })
             }

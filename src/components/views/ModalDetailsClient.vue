@@ -8,7 +8,7 @@
     <section class="modal-card-body">
 
         <figure class="image is-96x96">
-            <img :src="data.photo == '' ? 'img/profile_default.svg' : 'img/profile/' + data.photo">
+            <img :src="data.photo == '' ? 'img/profile_default.svg' : api + '/uploads/profile/' + data.photo">
         </figure>
         <br>
         <b-field grouped group-multiline>
@@ -85,7 +85,8 @@ import axios from "@/config/axios.js";
                 images_support: [],
                 data: '',
                 images: [],
-                isImg: false
+                isImg: false,
+                api: process.env.VUE_APP_API_URL
                 
             }
         },

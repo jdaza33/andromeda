@@ -16,7 +16,8 @@ const global_es = {
             date: 'Fecha',
             status: 'Estado',
             users: 'Gestión de Usuarios',
-            newuser: 'Nuevo Usuario'
+            newuser: 'Nuevo Usuario',
+            assignSupport: 'Asignar Soporte'
         },
         button: {
             enter: 'Entrar',
@@ -42,7 +43,9 @@ const global_es = {
             issue: 'Asunto',
             message: 'Mensaje',
             description: 'Descripción',
-            upload: '¡Suba sus imagenes aquí!'
+            upload: '¡Suba sus imagenes aquí!',
+            phone: 'Telefono',
+            toAssign: 'Asignar a'
         }
 
     },
