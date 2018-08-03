@@ -69,14 +69,11 @@ export default {
                     })
                     .then(ress => {
                         if(ress.data.res){
-                            if(this.$cookie.get('infopersonalId')!=ress.data.infoPersonal._id){
-                                this.nameAdmin.push({
-                                    id: res.data.user[i]._id,
-                                    name: ress.data.infoPersonal.name,
-                                    lastname: ress.data.infoPersonal.lastname
-                                })
-                            }
-                            
+                            this.nameAdmin.push({
+                                id: res.data.user[i]._id,
+                                name: ress.data.infoPersonal.name,
+                                lastname: ress.data.infoPersonal.lastname
+                            })
                         }
                         
                     })

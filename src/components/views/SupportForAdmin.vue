@@ -1,13 +1,30 @@
 <template>
     <section>
+
         <b-field grouped group-multiline>
-            <h2 class="title is-3">{{global.title.support}}</h2>
-            
+            <h2 class="title is-3">
+                {{showTypeTable == 0 ? global.title.support + ' | Todos' : global.title.support + ' | Para mí'}} &nbsp; 
+            </h2>
+
+            <b-radio-button v-model="showTypeTable"
+                native-value="0"
+                type="is-info">
+                <b-icon pack="fas" icon="door-open" size="is-small"></b-icon>
+                <span>Todos</span>
+            </b-radio-button>
+
+            <b-radio-button v-model="showTypeTable"
+                native-value="1"
+                type="is-success">
+                <b-icon pack="fas" icon="door-closed" size="is-small"></b-icon>
+                <span>Para mí</span>
+            </b-radio-button>
         </b-field>
+        
 
         <br>
-        <p class="buttons">
-            <a class="button is-success is-small is-rounded" @click="approve()">
+        <p class="buttons" v-if="showTypeTable=='0'">
+            <a class="button is-success is-small is-rounded" @click="approve()"> 
                 <span>{{global.button.approve}}</span>
                 <span class="icon is-small">
                 <i class="fas fa-thumbs-up"></i>
@@ -57,15 +74,13 @@
             :per-page="perPage"
             :current-page.sync="currentPage"
             :pagination-simple="isPaginationSimple"
-            :default-sort-direction="defaultSortDirection">
+            :default-sort-direction="defaultSortDirection"
+            
+            v-if="showTypeTable=='0'">
 
             <template slot-scope="props">
-                <!--<b-table-column field="nro" label="Nro" width="40" centered numeric sortable>
-                    {{ props.row.nro }}
-                </b-table-column>-->
 
                 <b-table-column field="client" label="Cliente" centered sortable>
-                    <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
                     
                     <a class="button is-info is-small" @click="loadDetailsClient(props.row.id_client)">
                         <span class="icon is-small">
@@ -84,16 +99,7 @@
                     {{ props.row.issue }}
                 </b-table-column>
 
-                <!--<b-table-column field="description" label="Descripción" centered sortable>
-                    {{ props.row.description }}
-                </b-table-column>-->
-
-                <!--<b-table-column field="image" label="Imagenes" centered sortable>
-                    {{ props.row.images }}
-                </b-table-column>-->
-
                 <b-table-column field="assigned" label="Asignado" centered sortable>
-                    <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
                     
                     <a class="button is-success is-small" @click="loadDetailsClient(props.row.assigned)" v-if="props.row.assigned!=''">
                         <span class="icon is-small">
@@ -128,12 +134,6 @@
                     </a>
                 </b-table-column>
 
-                <!--<b-table-column label="Gender" sortable>
-                    <b-icon pack="fas"
-                        :icon="props.row.gender === 'Male' ? 'mars' : 'venus'">
-                    </b-icon>
-                    {{ props.row.gender }}
-                </b-table-column>-->
             </template>
 
             <template slot="empty">
@@ -151,6 +151,95 @@
                 </section>
             </template>
         </b-table>
+
+        <b-table
+            :data="isEmpty ? [] : dataForMe"
+            :bordered="isBordered"
+            :striped="isStriped"
+            :narrowed="isNarrowed"
+            :hoverable="isHoverable"
+            :loading="isLoading"
+            :focusable="isFocusable"
+            :mobile-cards="hasMobileCards"
+
+            :selected.sync="selectedForMe"
+            
+            :paginated="isPaginated"
+            :per-page="perPageForMe"
+            :current-page.sync="currentPageForMe"
+            :pagination-simple="isPaginationSimple"
+            :default-sort-direction="defaultSortDirection"
+            
+            v-else>
+
+            <template slot-scope="props">
+
+                <b-table-column field="client" label="Cliente" centered sortable>
+                    <a class="button is-info is-small" @click="loadDetailsClient(props.row.id_client)">
+                        <span class="icon is-small">
+                        <i class="fas fa-user-astronaut"></i>
+                        </span>
+                    </a>
+                </b-table-column>
+
+                <b-table-column field="date" label="Fecha" centered sortable>
+                    <span class="tag is-primary">
+                        {{ props.row.createdAt.substring(0, 10) }}
+                    </span>
+                </b-table-column>
+
+                <b-table-column field="issue" label="Asunto" centered sortable>
+                    {{ props.row.issue }}
+                </b-table-column>
+
+
+                <b-table-column field="status" label="Estado" centered sortable>
+                    <b-tag 
+                    :type="
+                        props.row.status == 'P' ? 'is-warning' : 
+                        props.row.status == 'A' ? 'is-success' : 
+                        props.row.status == 'R' ? 'is-danger' : 'is-dark' ">
+
+                        {{ props.row.status == 'P' ? 'Pendiente' : 
+                        props.row.status == 'A' ? 'Aprobado' : 
+                        props.row.status == 'R' ? 'Rechazado' : 'Cancelado' }}
+                        
+                        </b-tag>
+                </b-table-column>
+
+                <b-table-column field="more" label="Detalles" centered sortable>
+                    <a class="button is-info is-small" @click="loadDetailsSupport(props.row.nro)">
+                        <span class="icon is-small">
+                        <i class="fas fa-info"></i>
+                        </span>
+                    </a>
+                </b-table-column>
+
+                <b-table-column field="record" label="Historial" centered sortable>
+                    
+                </b-table-column>
+
+            </template>
+
+            <template slot="empty">
+                <section class="section">
+                    <div class="content has-text-grey has-text-centered">
+                        <p>
+                            <b-icon
+                                pack="fas"
+                                icon="frown-open"
+                                size="is-large">
+                            </b-icon>
+                        </p>
+                        <p>Nothing here.</p>
+                    </div>
+                </section>
+            </template>
+        </b-table>
+
+
+
+
     </section>
 </template>
 
@@ -167,33 +256,41 @@ import ModalAssignSupport from "@/components/views/ModalAssignSupport.vue";
 export default {
   data() {
     return {
-      isComponentModalDetailsSupportActive: false,
-      isComponentModalDetailsClientActive: false,
-      isComponentModalAssignSupportActive: false,
-      idClient: '',
-      nroSupport: '',
-      clients: [],
+        isComponentModalDetailsSupportActive: false,
+        isComponentModalDetailsClientActive: false,
+        isComponentModalAssignSupportActive: false,
+        idClient: '',
+        nroSupport: '',
+        clients: [],
 
-      global: global.text,
+        global: global.text,
 
-      data: [],
+        data: [],
 
-      isEmpty: false,
-      isBordered: false,
-      isStriped: true,
-      isNarrowed: true,
-      isHoverable: true,
-      isFocusable: false,
-      isLoading: false,
-      hasMobileCards: true,
+        isEmpty: false,
+        isBordered: false,
+        isStriped: true,
+        isNarrowed: true,
+        isHoverable: true,
+        isFocusable: false,
+        isLoading: false,
+        hasMobileCards: true,
 
-      selected: "",
+        selected: "",
 
-      isPaginated: true,
-      isPaginationSimple: false,
-      defaultSortDirection: "asc",
-      currentPage: 1,
-      perPage: 7
+        isPaginated: true,
+        isPaginationSimple: false,
+        defaultSortDirection: "asc",
+        currentPage: 1,
+        perPage: 7,
+
+        showTypeTable: '0',
+
+        dataForMe: [],
+        selectedForMe: '',
+        perPageForMe: 4,
+        currentPageForMe: 1
+
     };
   },
 
@@ -220,6 +317,11 @@ export default {
         .then(res => {
           if (res.data.res) {
             this.data = res.data.support;
+            for (let i in this.data){
+                if(this.data[i].assigned == this.$cookie.get('userId')){
+                    this.dataForMe.push(this.data[i])
+                }
+            }
           }
         })
         .catch(err => {
