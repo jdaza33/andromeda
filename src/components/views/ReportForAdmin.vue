@@ -1,28 +1,16 @@
 <template>
     <section>
         <b-field grouped group-multiline>
-            <h2 class="title is-3">{{global.title.users}}</h2>
+            <h2 class="title is-3">Gestión de Reportes</h2>
             
         </b-field>
 
         <br>
         <p class="buttons">
-            <a class="button is-success is-small is-rounded" @click="loadCreateNewUser()">
-                <span>{{global.button.new}}</span>
+            <a class="button is-success is-small is-rounded" @click="checkIn()">
+                <span>Facturar</span>
                 <span class="icon is-small">
-                <i class="fas fa-plus"></i>
-                </span>
-            </a>
-            <a class="button is-danger is-small is-rounded" @click="lock()">
-                <span>{{global.button.lock}}</span>
-                <span class="icon is-small">
-                <i class="fas fa-times"></i>
-                </span>
-            </a>
-            <a class="button is-warning is-small is-rounded" @click="unLock()">
-                <span>{{global.button.unlock}}</span>
-                <span class="icon is-small">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-bell"></i>
                 </span>
             </a>
             <a class="button is-info is-small is-rounded" @click="deselect()">
@@ -31,20 +19,38 @@
                 <i class="fas fa-bolt"></i>
                 </span>
             </a>
+            <a>
+                <b-field>
+                    <b-radio-button v-model="showReport"
+                        native-value="0"
+                        type="is-success">
+                        <b-icon pack="fas" icon="eye"></b-icon>
+                        <span>Todos</span>
+                    </b-radio-button>
+
+                    <b-radio-button v-model="showReport"
+                        native-value="1"
+                        type="is-info">
+                        <b-icon pack="fas" icon="check-double"></b-icon>
+                        <span>Facturados</span>
+                    </b-radio-button>
+
+                    <b-radio-button v-model="showReport"
+                        native-value="2"
+                        type="is-warning">
+                        <b-icon pack="fas" icon="check"></b-icon>
+                        <span>No Facturados</span>
+                    </b-radio-button>
+                </b-field>
+            </a>
         </p>
 
         <!--Modals-->
-        <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
-            <modal-details-client :idClient="idClient"></modal-details-client>
-        </b-modal>
 
-        <b-modal :active.sync="isComponentModalCreateNewUserActive" has-modal-card :width="960">
-            <modal-create-new-user @hijo:change="listenSon"></modal-create-new-user>
-        </b-modal>
         <!--End Modals-->
 
         <b-table
-            :data="isEmpty ? [] : data"
+            :data="isEmpty ? [] : showReport == '0'  ? reportsAll : showReport == '1' ? reportsCheckIn : reportsNotCheckIn"
             :bordered="isBordered"
             :striped="isStriped"
             :narrowed="isNarrowed"
@@ -63,36 +69,39 @@
 
             <template slot-scope="props">
                 
-                <b-table-column field="assigned" label="Asignado" centered sortable>
-                    <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
-                    
-                    <a class="button is-info is-small" @click="loadDetailsClient(props.row._id)">
-                        <span class="icon is-small">
-                        <i class="fas fa-user-astronaut"></i>
-                        </span>
-                    </a>
-                    
-                </b-table-column>
-
-                <b-table-column field="date" label="Creado" centered sortable>
-                    <span class="tag is-info">
-                        {{ props.row.createdAt.substring(0, 10) }}
+                <b-table-column field="nro" label="Nro. de Reporte" centered sortable>
+                    <span class="tag is-success">
+                        {{props.row.nro}}
                     </span>
                 </b-table-column>
 
-                <b-table-column field="username" label="Usuario" centered sortable>
-                    {{ props.row.username }}
+                <b-table-column field="nro_support" label="Nro. de Soporte" centered sortable>
+                    <span class="tag is-info">
+                       {{props.row.nro_support}}
+                    </span>
                 </b-table-column>
 
-                <b-table-column field="rol" label="Rol" centered sortable>
-                    {{ props.row.rol }}
+                <b-table-column field="total_hours" label="Total Horas" centered sortable>
+                    {{props.row.total_hours}}
                 </b-table-column>
 
-                <b-table-column field="status" label="Estado" centered sortable>
+                <b-table-column field="total_service" label="Total Servicio" centered sortable>
+                    {{props.row.total_service}}
+                </b-table-column>
+
+                <b-table-column field="invoiced" label="Facturado" centered sortable>
                     <b-tag 
-                    :type="props.row.status == true ? 'is-success' : 'is-danger'">
-                    {{ props.row.status == true ? 'Activo' : 'Bloqueado'}}
+                    :type="props.row.invoiced == 'S' ? 'is-success' : 'is-danger'">
+                    {{ props.row.invoiced == 'S' ? 'SI' : 'NO'}}
                     </b-tag>
+                </b-table-column>
+
+                <b-table-column field="pdf" label="PDF" centered sortable>
+                    <a class="button is-warning is-small" @click="showPdf()">
+                        <span class="icon is-small">
+                        <i class="fas fa-file-pdf"></i>
+                        </span>
+                    </a>
                 </b-table-column>
 
             </template>
@@ -120,18 +129,13 @@ import global from "@/config/global.js";
 import axios from "@/config/axios.js";
 
 //Components
-import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
-import ModalCreateNewUser from "@/components/views/ModalCreateNewUser.vue";
+
 
 export default {
   data() {
     return {
-      isComponentModalDetailsClientActive: false,
-      isComponentModalCreateNewUserActive: false,
 
       global: global.text,
-
-      data: [],
 
       isEmpty: false,
       isBordered: false,
@@ -148,13 +152,15 @@ export default {
       isPaginationSimple: false,
       defaultSortDirection: "asc",
       currentPage: 1,
-      perPage: 7
-    };
-  },
+      perPage: 7,
 
-  components: {
-    ModalDetailsClient,
-    ModalCreateNewUser
+      showReport: '0',
+
+      reportsAll: '',
+      reportsCheckIn: [],
+      reportsNotCheckIn: []
+
+    };
   },
 
   methods: {
@@ -168,119 +174,28 @@ export default {
 
     async refreshData() {
       await axios
-        .get(`/user/ref/${this.$cookie.get("ref")}`, {
+        .get(`/report/ref/${this.$cookie.get('ref')}`, {
             headers: { Authorization: "bearer " + this.$cookie.get("token") }
         })
         .then(res => {
           if (res.data.res) {
-            this.data = res.data.user;
-            
+            this.reportsAll = res.data.report
+
+            this.reportsCheckIn = []
+            this.reportsNotCheckIn = []
+
+            for(let i in this.reportsAll){
+                if(this.reportsAll[i].invoiced == 'S'){
+                    this.reportsCheckIn.push(this.reportsAll[i])
+                }else{
+                    this.reportsNotCheckIn.push(this.reportsAll[i])
+                }
+            }
           }
         })
         .catch(err => {
           alert(err);
         });
-    },
-
-
-    loadDetailsClient(idClient){
-        this.idClient = idClient;
-        this.isComponentModalDetailsClientActive = true;
-    },
-
-    loadCreateNewUser(){
-        this.isComponentModalCreateNewUserActive = true;
-    },
-
-    lock(){
-
-        //TODO 
-        /*
-        Quitar el codigo duro que tengo aqui jeje
-        */
-        if(this.selected==''){
-            this.$toast.open({
-                message: 'Seleccione una fila',
-                type: 'is-warning'
-            })
-        }else{
-            this.$dialog.confirm({
-                title: 'Bloquear Usuario',
-                message: `¿Estás seguro de bloquear el usuario: ${this.selected.username}?`,
-                confirmText: 'Bloquear',
-                type: 'is-danger',
-                hasIcon: true,
-                icon: 'lock',
-                iconPack: 'fas',
-                onConfirm: async () => {
-                    this.selected.status = false
-                    await axios
-                    .put(`/user/changestatus/${this.selected._id}`, this.selected, {
-                        headers: { Authorization: "bearer " + this.$cookie.get("token") }
-                    })
-                    .then(res => {
-                        if(res.data.res){
-                            this.$toast.open({
-                                message: 'Usuario Bloqueado',
-                                type: 'is-success'
-                            })
-                        }
-                    })
-                    .catch(err => {
-                        alert(err)
-                    })
-
-                    await this.refreshData();
-                }
-            })
-        }
-        
-    },
-
-
-    unLock(){
-
-        //TODO 
-        /*
-        Quitar el codigo duro que tengo aqui jeje
-        */
-        if(this.selected==''){
-            this.$toast.open({
-                message: 'Seleccione una fila',
-                type: 'is-warning'
-            })
-        }else{
-            this.$dialog.confirm({
-                title: 'Desbloquear Usuario',
-                message: `¿Estás seguro de desbloquear el usuario: ${this.selected.username}?`,
-                confirmText: 'Desbloquear',
-                type: 'is-warning',
-                hasIcon: true,
-                icon: 'unlock',
-                iconPack: 'fas',
-                onConfirm: async () => {
-                    this.selected.status = true
-                    await axios
-                    .put(`/user/changestatus/${this.selected._id}`, this.selected, {
-                        headers: { Authorization: "bearer " + this.$cookie.get("token") }
-                    })
-                    .then(res => {
-                        if(res.data.res){
-                            this.$toast.open({
-                                message: 'Usuario Desbloqueado',
-                                type: 'is-success'
-                            })
-                        }
-                    })
-                    .catch(err => {
-                        alert(err)
-                    })
-
-                    await this.refreshData();
-                }
-            })
-        }
-        
     }
 
   },

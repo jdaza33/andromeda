@@ -41,98 +41,111 @@ export default {
     return {
       global: global.text,
       nameAdmin: [],
-      isAssignSelect: '',
-      supportSelect: ''
-
+      isAssignSelect: "",
+      supportSelect: ""
     };
   },
 
-  props: ['support'],
+  props: ["support"],
 
   methods: {
+    async refreshData() {
+      this.supportSelect = this.support;
 
-    async refreshData(){
-
-        this.supportSelect = this.support;
-
-        await axios
-        .get(`/user/ref/${this.$cookie.get('ref')}`, {
-            headers: { Authorization: "bearer " + this.$cookie.get("token") }
+      await axios
+        .get(`/user/ref/${this.$cookie.get("ref")}`, {
+          headers: { Authorization: "bearer " + this.$cookie.get("token") }
         })
         .then(async res => {
-            if(res.data.res){
-
-                for (let i in res.data.user){
-                    await axios
-                    .get(`/infopersonal/${res.data.user[i].id_infopersonal}`, {
-                        headers: { Authorization: "bearer " + this.$cookie.get("token") }
-                    })
-                    .then(ress => {
-                        if(ress.data.res){
-                            this.nameAdmin.push({
-                                id: res.data.user[i]._id,
-                                name: ress.data.infoPersonal.name,
-                                lastname: ress.data.infoPersonal.lastname
-                            })
-                        }
-                        
-                    })
-                    .catch(err => {
-                        alert(err)
-                    })
-                }
-
-                
+          if (res.data.res) {
+            for (let i in res.data.user) {
+              await axios
+                .get(`/infopersonal/${res.data.user[i].id_infopersonal}`, {
+                  headers: {
+                    Authorization: "bearer " + this.$cookie.get("token")
+                  }
+                })
+                .then(ress => {
+                  if (ress.data.res) {
+                    this.nameAdmin.push({
+                      id: res.data.user[i]._id,
+                      name: ress.data.infoPersonal.name,
+                      lastname: ress.data.infoPersonal.lastname
+                    });
+                  }
+                })
+                .catch(err => {
+                  alert(err);
+                });
             }
+          }
         })
         .catch(err => {
-            alert(err);
-        })
+          alert(err);
+        });
     },
 
     async saveAssignSupport() {
+      this.supportSelect.status = "A";
+      this.supportSelect.assigned = this.isAssignSelect;
+      //this.$log.debug(this.supportSelect);
 
-        this.supportSelect.status= 'A';
-        this.supportSelect.assigned = this.isAssignSelect;
-        //this.$log.debug(this.supportSelect);
-
-        await axios
-        .put(`/support/changestatus/${this.supportSelect._id}`, this.supportSelect, {
+      await axios
+        .put(
+          `/support/changestatus/${this.supportSelect._id}`,
+          this.supportSelect,
+          {
             headers: { Authorization: "bearer " + this.$cookie.get("token") }
-        })
-        .then(res => {
-            if(res.data.res){
-                this.$toast.open({
-                    message: 'Solicitud Aprobada',
-                    type: 'is-success'
-                });
-                this.$emit('hijo:change');
-                this.$parent.close();
-            }
+          }
+        )
+        .then(async res => {
+          if (res.data.res) {
+
+            await axios
+            .post("/record",
+            {
+                nro_support: this.supportSelect.nro,
+                activities: []
+            },
+            {
+                headers: { Authorization: "bearer " + this.$cookie.get("token") }
+            })
+            .then(ress => {
+                if(ress.data.res){
+                    this.$toast.open({
+                    message: "Solicitud Aprobada",
+                    type: "is-success"
+                    });
+                    this.$emit("hijo:change");
+                    this.$parent.close();
+                }
+                
+            })
+            .catch(errr => {
+                alert(errr);
+            });
+          }
         })
         .catch(err => {
-            alert(err)
-        })
+          alert(err);
+        });
 
       
     },
 
     validateInput(array) {
-        let aux = true;
+      let aux = true;
 
-        for (let i in array) {
-            if (array[i] == "") {
-            aux = false;
-            notify(this, "E007");
-            return aux;
-            } 
+      for (let i in array) {
+        if (array[i] == "") {
+          aux = false;
+          notify(this, "E007");
+          return aux;
         }
+      }
 
-        return aux;
-      
+      return aux;
     }
-
-
   },
   created() {
     this.refreshData();

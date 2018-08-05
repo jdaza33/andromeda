@@ -17,7 +17,8 @@ const global_es = {
             status: 'Estado',
             users: 'Gestión de Usuarios',
             newuser: 'Nuevo Usuario',
-            assignSupport: 'Asignar Soporte'
+            assignSupport: 'Asignar Soporte',
+            recordSupport: 'Historial de Soporte'
         },
         button: {
             enter: 'Entrar',
