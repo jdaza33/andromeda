@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section ref="pdf">
         <b-field grouped group-multiline>
             <h2 class="title is-3">Gestión de Reportes</h2>
             
@@ -46,7 +46,10 @@
         </p>
 
         <!--Modals-->
-
+            <b-modal :active.sync="isComponentModalisModalBillReportShowActive" has-modal-card :width="960">
+                <modal-bill-report :nroSupport="nroSupportBill" :nroReport="nroReportBill" :recordSelect="recordSelect"></modal-bill-report>
+            </b-modal>
+            
         <!--End Modals-->
 
         <b-table
@@ -97,7 +100,7 @@
                 </b-table-column>
 
                 <b-table-column field="pdf" label="PDF" centered sortable>
-                    <a class="button is-warning is-small" @click="showPdf()">
+                    <a class="button is-warning is-small" @click="showPdf(props.row.nro_support+'|'+props.row.total_hours+'|'+props.row.total_service)">
                         <span class="icon is-small">
                         <i class="fas fa-file-pdf"></i>
                         </span>
@@ -128,39 +131,50 @@
 import global from "@/config/global.js";
 import axios from "@/config/axios.js";
 
-//Components
 
+//Components
+import ModalBillReport from '@/components/views/ModalBillReport'
 
 export default {
   data() {
     return {
 
-      global: global.text,
+        isComponentModalisModalBillReportShowActive: false,
 
-      isEmpty: false,
-      isBordered: false,
-      isStriped: true,
-      isNarrowed: true,
-      isHoverable: true,
-      isFocusable: false,
-      isLoading: false,
-      hasMobileCards: true,
+        global: global.text,
 
-      selected: "",
+        isEmpty: false,
+        isBordered: false,
+        isStriped: true,
+        isNarrowed: true,
+        isHoverable: true,
+        isFocusable: false,
+        isLoading: false,
+        hasMobileCards: true,
 
-      isPaginated: true,
-      isPaginationSimple: false,
-      defaultSortDirection: "asc",
-      currentPage: 1,
-      perPage: 7,
+        selected: "",
 
-      showReport: '0',
+        isPaginated: true,
+        isPaginationSimple: false,
+        defaultSortDirection: "asc",
+        currentPage: 1,
+        perPage: 7,
 
-      reportsAll: '',
-      reportsCheckIn: [],
-      reportsNotCheckIn: []
+        showReport: '0',
+
+        reportsAll: '',
+        reportsCheckIn: [],
+        reportsNotCheckIn: [],
+
+        nroSupportBill: '',
+        nroReportBill: '',
+        recordSelect: ''
 
     };
+  },
+
+  components: {
+      ModalBillReport
   },
 
   methods: {
@@ -173,12 +187,12 @@ export default {
     },
 
     async refreshData() {
-      await axios
+        await axios
         .get(`/report/ref/${this.$cookie.get('ref')}`, {
             headers: { Authorization: "bearer " + this.$cookie.get("token") }
         })
         .then(res => {
-          if (res.data.res) {
+            if (res.data.res) {
             this.reportsAll = res.data.report
 
             this.reportsCheckIn = []
@@ -191,11 +205,106 @@ export default {
                     this.reportsNotCheckIn.push(this.reportsAll[i])
                 }
             }
-          }
+            }
         })
         .catch(err => {
-          alert(err);
+            alert(err);
         });
+
+    },
+
+    showPdf(details){
+
+        let routeData = this.$router.resolve({path: `/reportemp/${details}`});
+        window.open(routeData.href, '_blank');
+    },
+
+    checkIn(){
+
+        //TODO 
+        /*
+        Quitar el codigo duro que tengo aqui jeje
+        */
+        if(this.selected==''){
+            this.$toast.open({
+                message: 'Seleccione una fila',
+                type: 'is-warning'
+            })
+        }else{
+            if(this.selected.invoiced == 'S'){
+                this.$toast.open({
+                    message: 'El reporte ya fue facturado',
+                    type: 'is-warning'
+                })
+            }else{
+                
+                this.$dialog.confirm({
+                    title: 'Facturar Reporte',
+                    message: `¿Estás seguro de facturar el reporte nro. #${this.selected.nro}?`,
+                    confirmText: 'Facturar',
+                    type: 'is-success',
+                    hasIcon: true,
+                    icon: 'bell',
+                    iconPack: 'fas',
+                    onConfirm: async () => {
+                        this.nroSupportBill = this.selected.nro_support
+                        this.nroReportBill = this.selected.nro
+                        this.recordSelect = this.selected
+                        this.isComponentModalisModalBillReportShowActive = true
+                        /*let client = await this.loadClient(this.selected.nro_support)
+
+                        let bill = {
+                            nro_report: this.selected.nro,
+                            id_client: client._id,
+                            details: [],
+                            sub_total: '0',
+                            iva: '0',
+                            total_amount: '0',
+                            ref: this.$cookie.get('ref')
+                        }
+
+                        this.selected.invoiced = 'S'
+                        this.$log.debug(this.selected)
+                        await axios
+                        .put(`/report/changeinvoiced/${this.selected._id}`, this.selected, {
+                            headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                        })
+                        .then(async res => {
+                            if(res.data.res){
+
+                                this.$toast.open({
+                                    message: 'Reporte facturado',
+                                    type: 'is-success'
+                                })
+
+                                await axios
+                                .post('/bill', bill, {
+                                    headers: { Authorization: "bearer " + this.$cookie.get("token") }
+                                })
+                                .then(ress => {
+                                    if(ress.data.res){
+                                        this.$toast.open({
+                                            message: 'Factura creada',
+                                            type: 'is-success'
+                                        })
+                                        this.refreshData();
+                                    }
+                                })
+                                .catch (errr => {
+                                    alert(errr)
+                                })
+
+                            }
+                        })
+                        .catch(err => {
+                            alert(err);
+                        });*/
+                    }
+                })
+            }
+            
+        }
+        
     }
 
   },

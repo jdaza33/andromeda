@@ -14,6 +14,11 @@ import Supportc from '@/components/views/SupportForClient'
 import Report from '@/components/views/ReportForAdmin'
 import Users from '@/components/views/Users'
 import Calendar from '@/components/views/Calendar'
+import BillForAdmin from '@/components/views/BillForAdmin'
+import BillForClient from '@/components/views/BillForClient'
+
+//Templates
+import ReportTemp from '@/components/templates/Report'
 
 import NProgress from 'nprogress'
 
@@ -47,6 +52,17 @@ const router = new Router({
       meta: {
         isAuth: true
       }
+    },
+    {
+      path: '/reportemp/:nro',
+      name: 'reportemp',
+      component: ReportTemp,
+      meta: {
+        isAuth: false,
+        requiredRol: false,
+        requiredAuth: false
+      },
+      props: true
     },
     {
       path: '/dash',
@@ -97,6 +113,24 @@ const router = new Router({
           path: 'calendar',
           name: 'calendar',
           component: Calendar,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'billadmin',
+          name: 'billadmin',
+          component: BillForAdmin,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'billclient',
+          name: 'billclient',
+          component: BillForClient,
           meta: {
             requiredRol: true,
             requiredAuth: true

@@ -157,6 +157,20 @@ export default {
           role: false,
           type: "ALL",
           url: "calendar"
+        },
+        {
+          title: "Facturación",
+          icon: "dollar-sign",
+          role: false,
+          type: "A",
+          url: "billadmin"
+        },
+        {
+          title: "Facturación",
+          icon: "dollar-sign",
+          role: false,
+          type: "C",
+          url: "billclient"
         }
       ],
       right: null,
