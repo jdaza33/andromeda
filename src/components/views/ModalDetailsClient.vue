@@ -7,64 +7,64 @@
 
     <section class="modal-card-body">
 
-        <figure class="image is-96x96">
-            <img :src="data.photo == '' ? 'img/profile_default.svg' : api + '/uploads/profile/' + data.photo">
-        </figure>
-        <br>
-        <b-field grouped group-multiline>
-            <div class="control">
-                <b-taglist attached>
-                    <b-tag type="is-dark" size="is-medium">Nit</b-tag>
-                    <b-tag type="is-info" size="is-medium">{{data.nit}}</b-tag>
-                </b-taglist>
-            </div>
+        <div class="center">
+            <figure class="image is-96x96">
+                <img :src="data.photo == '' ? 'img/profile_default.svg' : api + '/uploads/profile/' + data.photo" class="photo">
+            </figure>   
+        </div>
+        <p class="title is-4 has-text-centered">{{data.name}} {{data.lastname}}</p>
 
-            <div class="control">
-                <b-taglist attached>
-                    <b-tag type="is-dark" size="is-medium">Nombre</b-tag>
-                    <b-tag type="is-primary" size="is-medium">{{data.name}} {{data.lastname}}</b-tag>
-                </b-taglist>
-            </div>
-        </b-field>
-
-        <b-field grouped group-multiline>
-            <div class="control">
-                <b-taglist attached>
-                    <b-tag type="is-dark" size="is-medium">Email</b-tag>
-                    <b-tag type="is-success" size="is-medium">{{data.email}}</b-tag>
-                </b-taglist>
-            </div>
-
-            <div class="control">
-                <b-taglist attached>
-                    <b-tag type="is-dark" size="is-medium">Telf.</b-tag>
-                    <b-tag type="is-warning" size="is-medium">{{data.phone}}</b-tag>
-                </b-taglist>
-            </div>
-        </b-field>
         
-        <br>
+            <div class="control center space">
+                <b-taglist attached>
+                    <b-tag type="is-dark" size="is-small">NIT</b-tag>
+                    <b-tag type="is-info" size="is-small"><strong>{{data.nit}}</strong></b-tag>
+                </b-taglist>
+            </div>
+
+            <div class="control center space">
+                <b-taglist attached>
+                    <b-tag type="is-dark" size="is-small">Email</b-tag>
+                    <b-tag type="is-success" size="is-small"> <strong>{{data.email}}</strong> </b-tag>
+                </b-taglist>
+            </div>
+
+            <div class="control center space">
+                <b-taglist attached>
+                    <b-tag type="is-dark" size="is-small">Telf.</b-tag>
+                    <b-tag type="is-warning" size="is-small"><strong>{{data.phone}}</strong></b-tag>
+                </b-taglist>
+            </div>
+
+        
 
         <div class="content">
-            
-            <h3>Dirección</h3>
-            <p><strong>País: </strong>{{data.address.country}}</p>
-            <p><strong>Estado: </strong>{{data.address.state}}</p>
-            <p><strong>Localidad: </strong>{{data.address.location}}</p>
-            <p><strong>Descripción: </strong>{{data.address.description}}</p>
-            
+
+            <p class="title is-5 has-text-centered">Dirección: </p>
+
+            <p class="has-text-centered">
+                <strong>País: </strong>
+                {{data.address.country}} |
+                <strong> Estado: </strong> 
+                {{data.address.state}}
+            </p>
+
+            <p class="has-text-centered">
+                <strong>Localidad: </strong>
+                {{data.address.location}} |
+                <strong> Descripción: </strong> 
+                {{data.address.description}}
+            </p>
+
+            <div >
+
+            </div>
+
         </div>
-
-
-        
-        
-        
-
-        
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
     </footer>
     
@@ -136,8 +136,8 @@ import axios from "@/config/axios.js";
 
 <style scoped>
 .modal-card{
-    width: 645px;
-    height: 460px;
+    width: 500px;
+    height: 530px;
 }
 .modal-card-foot{
     height: 50px;
@@ -145,6 +145,23 @@ import axios from "@/config/axios.js";
 
 .section{
     width: 36em;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo {
+  width: 100%;
+  border-radius: 50px;
+  margin: auto;
+  display: block;
+}
+
+.space{
+    margin-bottom: 10px;
 }
 
 </style>

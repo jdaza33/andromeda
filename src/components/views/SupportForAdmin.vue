@@ -1,12 +1,8 @@
 <template>
     <section>
 
-        <b-field grouped group-multiline>
-            <h2 class="title is-3">
-                {{global.title.support}} 
-            </h2>
-        </b-field>
-        <br>
+        <breadcrub name="Gestión de Servicios" icon="wrench"/>
+
         <b-tabs type="is-boxed" position="is-centered" expanded>
             <b-tab-item label="Para todos" icon-pack="fas" icon="door-open">
 
@@ -278,6 +274,9 @@ import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
 import ModalAssignSupport from "@/components/views/ModalAssignSupport.vue";
 import ModalRecordSupportAdmin from "@/components/views/ModalRecordSupportAdmin.vue";
 
+//Templates
+import Breadcrub from "@/components/templates/Breadcrub.vue";
+
 export default {
   data() {
     return {
@@ -324,7 +323,8 @@ export default {
     ModalDetailsSupport,
     ModalDetailsClient,
     ModalAssignSupport,
-    ModalRecordSupportAdmin
+    ModalRecordSupportAdmin,
+    Breadcrub
   },
 
   methods: {

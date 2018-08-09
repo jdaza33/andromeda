@@ -56,7 +56,7 @@
                         </b-input>
                     </b-field>
 
-                    <div class="block">
+                    <div class="block center">
                         <b-radio v-model="isHoursServ"
                             native-value="0">
                             Horas
@@ -97,7 +97,7 @@
                     </div>
                     <br>
                     <b-field>
-                        <p class="control">
+                        <p class="control has-text-centered">
                             <button class="button is-primary" @click="saveActivity()">
                             Guardar
                             </button>
@@ -171,7 +171,7 @@
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
     </footer>
     
@@ -199,7 +199,8 @@ export default {
             description: '', 
             hours_service: ''
             },
-        record: ''
+        record: '',
+        date: new Date()
     };
   },
 
@@ -315,6 +316,12 @@ export default {
 .createRecord{
     margin-left: 35px;
     margin-right: 35px;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

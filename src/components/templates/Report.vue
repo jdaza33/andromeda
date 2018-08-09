@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="master" ref="pdf">
-            <div class="carta">
+        <div class="master">
+            <div class="carta" ref="pdf">
 
                 <p class="title is-3 center">Reporte de Soporte</p>
                 
@@ -259,9 +259,9 @@ export default {
 <style scoped>
 .carta{
     width: 612px;
-    height: 792px;
-    /*border: solid 1px black;*/
-    padding: 0px;
+    height: auto;
+    border: solid 1px black;
+    padding: 10px;
 }
 
 .center{
@@ -278,10 +278,16 @@ export default {
 
 
 .master{
-    /*display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center;*/
-    margin: 0px;
+    align-items: center;
+    margin: 20px 0px 0px 0px;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

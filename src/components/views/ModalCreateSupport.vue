@@ -31,7 +31,7 @@
 
         <p class="title is-6">{{global.title.images + ": "}}</p>
 
-        <div class="file has-name is-boxed">
+        <div class="file has-name is-boxed center">
             <label class="file-label">
                 <input class="file-input" type="file" multiple name="images" id="images" ref="images" v-on:change="handleFileUpload()">
                 <span class="file-cta">
@@ -44,7 +44,8 @@
                 </span>
             </label>
         </div>
-        <div class="tags">
+        <br>
+        <div class="tags center">
             <span v-for="(file, index) in images"
                 :key="index"
                 class="tag is-primary" >
@@ -58,7 +59,7 @@
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
         <button class="button is-primary is-rounded" @click.prevent="newSupport()">{{global.button.send}}</button>
     </footer>
@@ -68,31 +69,32 @@
 </template>
 
 <script>
-import global from "@/config/global.js";
-import axios from "@/config/axios.js";
-import notify from "@/config/notify.js";
-import FormData from "form-data";
+import global from '@/config/global.js';
+import axios from '@/config/axios.js';
+import notify from '@/config/notify.js';
+import FormData from 'form-data';
 
 export default {
   data() {
     return {
       global: global.text,
       support: {
-        id_client: this.$cookie.get("userId"),
-        nro: "",
-        issue: "",
-        description: "",
-        images: "",
-        ref: this.$cookie.get("ref")
+        id_client: this.$cookie.get('userId'),
+        nro: '',
+        issue: '',
+        description: '',
+        images: '',
+        ref: this.$cookie.get('ref'),
       },
-      images: ''
+      images: [],
+      imagesShow: '',
     };
   },
-  props: ["userData", "userInfoData"],
+  props: ['userData', 'userInfoData'],
 
   methods: {
     deleteDropFile(index) {
-        this.images.splice(index, 1);
+      this.images.splice(index, 1);
     },
 
     async newSupport() {
@@ -100,27 +102,24 @@ export default {
       this.support.images = await this.uploadImages();
 
       await axios
-        .post('/support',this.support,
-        { 
-            headers: 
-            { 
-                Authorization: "bearer " + this.$cookie.get("token") 
-                }
-            }
-        )
+        .post('/support', this.support, {
+          headers: {
+            Authorization: 'bearer ' + this.$cookie.get('token'),
+          },
+        })
         .then(res => {
-            this.$log.debug(res.data);
-            if (res.data.res) {
+          this.$log.debug(res.data);
+          if (res.data.res) {
             notify(this, 'S002');
-            this.$emit('hijo:change') //Envio el mensaje al componente padre para que actualice la tabla
-            this.$parent.close() //Cierro el modal
-            } else {
+            this.$emit('hijo:change'); //Envio el mensaje al componente padre para que actualice la tabla
+            this.$parent.close(); //Cierro el modal
+          } else {
             notify(this, 'E008');
-            }
+          }
         })
         .catch(err => {
-            alert(err);
-        })
+          alert(err);
+        });
     },
 
     generateNro() {
@@ -129,53 +128,59 @@ export default {
     },
 
     async uploadImages() {
-        
-        let data = new FormData();
-        //data.append("file", this.file);
+      let data = new FormData();
+      //data.append("file", this.file);
 
-        for( var i = 0; i < this.images.length; i++ ){
-            let file = this.images[i];
+      for (var i = 0; i < this.images.length; i++) {
+        let file = this.images[i];
 
-            data.append('images', file);
-        }
+        data.append('images', file);
+      }
 
-        let aux = '';
+      let aux = '';
 
-        await axios
-        .post("/upsupport", data, {
-            headers: {
-            "Content-Type": "multipart/form-data"
-            }
+      await axios
+        .post('/upsupport', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         })
         .then(res => {
-            if (res.data.res) {
-                for (let i in res.data.images) {
-                    if(i==0){
-                        aux = res.data.images[i].filename;
-                    }else{
-                        aux = aux + '|' + res.data.images[i].filename;
-                    }
-                }
+          if (res.data.res) {
+            for (let i in res.data.images) {
+              if (i == 0) {
+                aux = res.data.images[i].filename;
+              } else {
+                aux = aux + '|' + res.data.images[i].filename;
+              }
             }
+          }
         })
         .catch(err => {
-            notify(this, "E009");
-            this.$log.debug(err);
+          notify(this, 'E009');
+          this.$log.debug(err);
         });
-        return aux;
+      return aux;
     },
 
-    handleFileUpload(){
-        this.images = this.$refs.images.files;
-        this.images = Object.values(this.images);
-      }
-  }
+    handleFileUpload() {
+
+        for (let i in this.$refs.images.files) {
+            this.images.push(this.$refs.images.files[i]);
+        }
+        this.images.pop()
+        this.images.pop()
+
+        //this.$log.debug(this.images);
+
+    },
+  },
 };
 </script>
 
 <style scoped>
 .modal-card {
-  width: 645px;
+  width: 545px;
   height: 460px;
 }
 .modal-card-foot {
@@ -184,6 +189,12 @@ export default {
 
 .section {
   width: 36em;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 

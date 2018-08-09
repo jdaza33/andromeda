@@ -7,7 +7,7 @@
 
     <section class="modal-card-body">
         
-        <b-tabs position="is-centered" class="block">
+        <b-tabs position="is-centered" class="block" type="is-boxed">
             
             <b-tab-item label="Datos Personales">
 
@@ -73,18 +73,18 @@
                     </div>
 
                     <div class="column is-6">
-                        <div v-if="isProfile">
+                        <div v-if="isProfile" class="center">
                             <figure class="image is-96x96">
                                 <img :src="api + '/uploads/profile/' + infoPersonal.photo">
                             </figure>
                         </div>
-                        <div v-else>
+                        <div v-else class="center">
                             <figure class="image is-96x96">
                                 <img src="img/profile_default.svg">
                             </figure>
                         </div>
                         <br>
-                        <div class="file has-name is-small has-name is-boxed">
+                        <div class="file has-name is-small has-name is-boxed center">
                             <label class="file-label">
                                 <input class="file-input" type="file" name="profile" id="profile" ref="profile" v-on:change="handleFileUpload()">
                                 <span class="file-cta">
@@ -156,7 +156,7 @@
             </b-tab-item>
 
 
-            <b-tab-item label="Autenticación">
+            <b-tab-item label="Autenticación" class="auth">
 
                 <b-field>
                     <b-input placeholder="Username"
@@ -198,7 +198,7 @@
                         type="password"
                         icon-pack="fas"
                         icon="key"
-                        password-reveal
+                        
                         v-model="infoUser.password"
                         rounded
                         disabled>
@@ -358,6 +358,15 @@ import FormData from "form-data";
     height: 50px;
 }
 
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth{
+    margin: 0px 25px 0px 25px ;
+}
 </style>
 
 

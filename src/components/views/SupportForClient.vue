@@ -1,11 +1,8 @@
 <template>
     <section>
-        <b-field grouped group-multiline>
-            <h2 class="title is-3">{{global.title.support}}</h2>
-            
-        </b-field>
 
-        <br>
+        <breadcrub name="Gestión de Servicios" icon="wrench"/>
+
         <p class="buttons">
             <a class="button is-success is-small is-rounded" @click="isComponentModalCreateSupportActive = true">
                 <span>{{global.button.new}}</span>
@@ -149,6 +146,9 @@ import ModalCreateSupport from "@/components/views/ModalCreateSupport.vue";
 import ModalDetailsSupport from "@/components/views/ModalDetailsSupport.vue";
 import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
 
+//Templates
+import Breadcrub from "@/components/templates/Breadcrub.vue";
+
 export default {
   data() {
     return {
@@ -182,7 +182,8 @@ export default {
   components: {
     ModalCreateSupport,
     ModalDetailsSupport,
-    ModalDetailsClient
+    ModalDetailsClient,
+    Breadcrub
   },
 
   methods: {
