@@ -6,9 +6,9 @@
     </header>
 
     <section class="modal-card-body">
-        <p class="title is-6">{{global.input.toAssign + ": "}}</p>
+        <p class="title is-6 has-text-centered">{{global.input.toAssign + ": "}}</p>
         
-        <b-field>
+        <b-field class="center">
             <b-select
                 icon="users"
                 icon-pack="fas"
@@ -22,7 +22,7 @@
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
         <button class="button is-primary is-rounded" @click.prevent="saveAssignSupport()">{{global.button.save}}</button>
     </footer>
@@ -167,6 +167,12 @@ export default {
 
 .section {
   width: 36em;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

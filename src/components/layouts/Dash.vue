@@ -131,14 +131,14 @@ export default {
           url: "users"
         },
         {
-          title: "Soporte",
+          title: "Servicios",
           icon: "wrench",
           role: false,
           type: "A",
           url: "supporta"
         },
         {
-          title: "Soporte",
+          title: "Servicios",
           icon: "wrench",
           role: false,
           type: "C",
@@ -152,7 +152,7 @@ export default {
           url: "report"
         },
         {
-          title: "Calendar",
+          title: "Agenda",
           icon: "calendar-alt",
           role: false,
           type: "ALL",
@@ -331,9 +331,9 @@ export default {
 <style scoped>
 .navbar {
   height: 1em;
-  -webkit-box-shadow: 0px 7px 36px -13px rgba(140, 103, 239, 0.75);
-  -moz-box-shadow: 0px 7px 36px -13px rgba(140, 103, 239, 0.75);
-  box-shadow: 0px 7px 36px -13px rgba(140, 103, 239, 0.75);
+  -webkit-box-shadow: 0px 7px 36px -13px rgba(79, 147, 237, 0.75);
+  -moz-box-shadow: 0px 7px 36px -13px rgba(79, 147, 237, 0.75);
+  box-shadow: 0px 7px 36px -13px rgba(79, 147, 237, 0.75);
   margin-bottom: 10px;
 
   position: fixed;
@@ -357,7 +357,7 @@ export default {
 
 .is-sidebar-menu {
   padding: 2.5rem;
-  background-color: rgba(140, 103, 239);
+  background-color: #4f93ed;
   -webkit-box-shadow: 9px 10px 46px -6px rgba(74, 74, 74, 0.84);
   -moz-box-shadow: 9px 10px 46px -6px rgba(74, 74, 74, 0.84);
   box-shadow: 9px 10px 46px -6px rgba(74, 74, 74, 0.84);
@@ -368,7 +368,7 @@ export default {
 }
 
 .is-main-content {
-  margin: 80px 10px 10px 250px;
+  margin: 80px 20px 10px 265px;
   z-index: 1;
 }
 

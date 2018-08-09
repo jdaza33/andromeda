@@ -55,7 +55,7 @@
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
     </footer>
     
@@ -133,6 +133,12 @@ import global from "@/config/global.js";
 
 .section{
     width: 36em;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 </style>

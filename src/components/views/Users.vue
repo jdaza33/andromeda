@@ -1,11 +1,8 @@
 <template>
     <section>
-        <b-field grouped group-multiline>
-            <h2 class="title is-3">{{global.title.users}}</h2>
-            
-        </b-field>
 
-        <br>
+        <breadcrub name="Gestión de Usuarios" icon="users"/>
+
         <p class="buttons">
             <a class="button is-success is-small is-rounded" @click="loadCreateNewUser()">
                 <span>{{global.button.new}}</span>
@@ -63,7 +60,7 @@
 
             <template slot-scope="props">
                 
-                <b-table-column field="assigned" label="Asignado" centered sortable>
+                <b-table-column field="view" label="Visualizar" centered sortable>
                     <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
                     
                     <a class="button is-info is-small" @click="loadDetailsClient(props.row._id)">
@@ -123,6 +120,9 @@ import axios from "@/config/axios.js";
 import ModalDetailsClient from "@/components/views/ModalDetailsClient.vue";
 import ModalCreateNewUser from "@/components/views/ModalCreateNewUser.vue";
 
+//Templates
+import Breadcrub from "@/components/templates/Breadcrub.vue";
+
 export default {
   data() {
     return {
@@ -154,7 +154,8 @@ export default {
 
   components: {
     ModalDetailsClient,
-    ModalCreateNewUser
+    ModalCreateNewUser,
+    Breadcrub
   },
 
   methods: {
@@ -299,5 +300,10 @@ export default {
     max-height: 200px;
 }
 
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>
 

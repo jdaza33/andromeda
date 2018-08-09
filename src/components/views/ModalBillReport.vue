@@ -89,7 +89,7 @@
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
         <button class="button is-primary is-rounded" @click.prevent="saveBill()">{{global.button.save}}</button>
     </footer>
@@ -303,6 +303,12 @@ export default {
 .createRecord{
     margin-left: 35px;
     margin-right: 35px;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

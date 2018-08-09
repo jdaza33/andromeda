@@ -1,12 +1,9 @@
 <template>
   <div class="columns" >
 
-    <div class="column is-one-third master" v-if="show==1">
+    <div class="column is-one-third master" v-show="show==1">
 
       <section class="section">
-        <!--<div class="has-text-centered">
-            <img class="login-logo" src="img/logo.svg">
-        </div>-->
 
         <p class="title is-3 has-text-centered">¡Bienvenido!</p>
 
@@ -44,11 +41,8 @@
       </section>
     </div>
 
-    <div class="column is-one-third master" v-if="show==2">
+    <div class="column is-one-third master" v-show="show==2">
       <section class="section">
-        <!--<div class="has-text-centered">
-            <img class="login-logo" src="img/logo.svg">
-        </div>-->
 
         <p class="title is-3 has-text-centered">¡Únete!</p>
         

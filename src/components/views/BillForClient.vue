@@ -1,11 +1,8 @@
 <template>
     <section ref="pdf">
-        <b-field grouped group-multiline>
-            <h2 class="title is-3">Gestión de Facturas</h2>
-            
-        </b-field>
 
-        <br>
+        <breadcrub name="Gestión de Facturas" icon="dollar-sign"/>
+
         <p class="buttons">
             <a class="button is-success is-small is-rounded" @click="pay()">
                 <span>Pagar</span>
@@ -132,6 +129,9 @@ import axios from "@/config/axios.js";
 //Components
 import ModalDetailsClient from '@/components/views/ModalDetailsClient'
 
+//Templates
+import Breadcrub from "@/components/templates/Breadcrub.vue";
+
 export default {
   data() {
     return {
@@ -169,7 +169,8 @@ export default {
   },
 
   components: {
-      ModalDetailsClient
+      ModalDetailsClient,
+      Breadcrub
   },
 
   methods: {

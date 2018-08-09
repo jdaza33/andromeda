@@ -1,5 +1,5 @@
 <template>
-<div class="modal-card">
+<div class="modal-card container">
 
     <header class="modal-card-head has-text-centered">
         <p class="modal-card-title">{{global.title.newuser}}</p>
@@ -64,7 +64,7 @@
 
     </section>
 
-    <footer class="modal-card-foot foot">
+    <footer class="modal-card-foot foot center">
         <button class="button is-outlined is-rounded" type="button" @click="$parent.close()">{{global.button.close}}</button>
         <button class="button is-primary is-rounded" @click.prevent="newUser()">{{global.button.save}}</button>
     </footer>
@@ -146,8 +146,8 @@ export default {
 
 <style scoped>
 .modal-card {
-  width: 645px;
-  height: 460px;
+  width: 450px;
+  height: 560px;
 }
 .modal-card-foot {
   height: 50px;
@@ -155,6 +155,15 @@ export default {
 
 .section {
   width: 36em;
+}
+
+.container{
+    margin: 50px;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
 

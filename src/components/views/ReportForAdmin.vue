@@ -1,11 +1,8 @@
 <template>
     <section ref="pdf">
-        <b-field grouped group-multiline>
-            <h2 class="title is-3">Gestión de Reportes</h2>
-            
-        </b-field>
-
-        <br>
+        
+        <breadcrub name="Gestión de Reportes" icon="clipboard"/>
+        
         <p class="buttons">
             <a class="button is-success is-small is-rounded" @click="checkIn()">
                 <span>Facturar</span>
@@ -23,21 +20,21 @@
                 <b-field>
                     <b-radio-button v-model="showReport"
                         native-value="0"
-                        type="is-success">
+                        type="is-info">
                         <b-icon pack="fas" icon="eye"></b-icon>
                         <span>Todos</span>
                     </b-radio-button>
 
                     <b-radio-button v-model="showReport"
                         native-value="1"
-                        type="is-info">
+                        type="is-success">
                         <b-icon pack="fas" icon="check-double"></b-icon>
                         <span>Facturados</span>
                     </b-radio-button>
 
                     <b-radio-button v-model="showReport"
                         native-value="2"
-                        type="is-warning">
+                        type="is-danger">
                         <b-icon pack="fas" icon="check"></b-icon>
                         <span>No Facturados</span>
                     </b-radio-button>
@@ -135,6 +132,9 @@ import axios from "@/config/axios.js";
 //Components
 import ModalBillReport from '@/components/views/ModalBillReport'
 
+//Templates
+import Breadcrub from "@/components/templates/Breadcrub.vue";
+
 export default {
   data() {
     return {
@@ -174,7 +174,8 @@ export default {
   },
 
   components: {
-      ModalBillReport
+      ModalBillReport,
+      Breadcrub
   },
 
   methods: {
