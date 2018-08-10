@@ -53,7 +53,7 @@
                                 type="text"
                                 icon-pack="fas"
                                 icon="at"
-                                maxlength="20"
+                                maxlength="50"
                                 v-model="infoPersonal.email"
                                 rounded>
                             </b-input>

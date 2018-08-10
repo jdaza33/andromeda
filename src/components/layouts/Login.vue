@@ -64,6 +64,10 @@
                 icon-pack="fas"
                 icon="address-card"
                 maxlength="20"
+
+                v-mask="'A-#########'"
+                masked="false"
+                
                 v-model="register.nit"
                 @keyup.enter.native="newUser()"
                 rounded>

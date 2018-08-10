@@ -56,9 +56,9 @@
                             </a>
                         </b-table-column>
 
-                        <b-table-column field="date" label="Fecha" centered sortable>
+                        <b-table-column field="date" label="Creado" centered sortable>
                             <span class="tag is-primary">
-                                {{ props.row.createdAt.substring(0, 10) }}
+                                {{ convertDate(props.row.createdAt.substring(0, 10)) }}
                             </span>
                         </b-table-column>
 
@@ -74,7 +74,11 @@
                                 </span>
                             </a>
                             <div v-else>
-                                n/a
+                                <a class="button is-danger is-small">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </a>
                             </div>
                             
                         </b-table-column>
@@ -89,8 +93,8 @@
 
                                 {{ props.row.status == 'P' ? 'Pendiente' : 
                                 props.row.status == 'A' ? 'Aprobado' : 
-                                props.row.status == 'R' ? 'Rechazado' :
-                                props.row.status == 'F' ? 'Finalizado' :  'Cancelado' }}
+                                props.row.status == 'R' ? 'Rechazado por Técnico' :
+                                props.row.status == 'F' ? 'Finalizado' :  'Rechazado por Cliente' }}
                                 
                                 </b-tag>
                         </b-table-column>
@@ -171,7 +175,7 @@
 
                         <b-table-column field="date" label="Fecha" centered sortable>
                             <span class="tag is-primary">
-                                {{ props.row.createdAt.substring(0, 10) }}
+                                {{ convertDate(props.row.createdAt.substring(0, 10)) }}
                             </span>
                         </b-table-column>
 
@@ -190,8 +194,8 @@
 
                                 {{ props.row.status == 'P' ? 'Pendiente' : 
                                 props.row.status == 'A' ? 'Aprobado' : 
-                                props.row.status == 'R' ? 'Rechazado' :
-                                props.row.status == 'F' ? 'Finalizado' :  'Cancelado' }}
+                                props.row.status == 'R' ? 'Rechazado por Técnico' :
+                                props.row.status == 'F' ? 'Finalizado' :  'Rechazado por Cliente' }}
                                 
                                 </b-tag>
                         </b-table-column>
@@ -453,6 +457,11 @@ export default {
                     message: 'La solicitud ya fue rechazada',
                     type: 'is-warning'
                 })
+            }else if (this.selected.status == 'F'){
+                this.$toast.open({
+                    message: 'La solicitud ya fue finalizada',
+                    type: 'is-warning'
+                })
             }else{
                 this.$dialog.confirm({
                     title: 'Rechazar Solicitud',
@@ -512,6 +521,11 @@ export default {
                     message: 'La solicitud ya fue aprobada',
                     type: 'is-warning'
                 })
+            }else if (this.selected.status == 'F'){
+                this.$toast.open({
+                    message: 'La solicitud ya fue finalizada',
+                    type: 'is-warning'
+                })
             }else{
 
                 //let temp = BusEvent.$emit('getInfopersonal', 'hola');
@@ -557,6 +571,11 @@ export default {
             }else if (this.selectedForMe.status == 'F'){
                 this.$toast.open({
                     message: 'La solicitud ya fue finalizada',
+                    type: 'is-warning'
+                })
+            }else if (this.selectedForMe.status == 'R'){
+                this.$toast.open({
+                    message: 'La solicitud ya fue rechazada',
                     type: 'is-warning'
                 })
             }else{
@@ -641,6 +660,11 @@ export default {
     generateNro() {
       let date = new Date();
       return date.getTime();
+    },
+
+    convertDate(date){
+        let temp = date.split('-')
+        return `${temp[2]}-${temp[1]}-${temp[0]}`
     }
 
   },

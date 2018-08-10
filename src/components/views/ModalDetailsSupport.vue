@@ -18,18 +18,24 @@
             <div class="control">
                 <b-taglist attached>
                     <b-tag type="is-dark" size="is-medium">{{global.title.date}}</b-tag>
-                    <b-tag type="is-primary" size="is-medium">{{data.createdAt.substring(0,10)}}</b-tag>
+                    <b-tag type="is-primary" size="is-medium">{{ convertDate(data.createdAt.substring(0,10)) }}</b-tag>
                 </b-taglist>
             </div>
 
             <div class="control">
                 <b-taglist attached>
                     <b-tag type="is-dark" size="is-medium">{{global.title.status}}</b-tag>
-                    <b-tag :type="data.status == 'P' ? 'is-warning' : data.status == 'A' ? 'is-success' : 
-                            data.status == 'R' ? 'is-danger' : 'is-dark'" size="is-medium">
+                    <b-tag :type="
+                                data.status == 'P' ? 'is-warning' : 
+                                data.status == 'A' ? 'is-info' : 
+                                data.status == 'R' ? 'is-danger' : 
+                                data.status == 'F' ? 'is-success' : 'is-dark' " 
+                            size="is-medium">
                         {{
-                            data.status == 'P' ? 'Pendiente' : data.status == 'A' ? 'Aprobado' : 
-                            data.status == 'R' ? 'Rechazado' : 'Cancelado'
+                            data.status == 'P' ? 'Pendiente' : 
+                            data.status == 'A' ? 'Apobado' : 
+                            data.status == 'R' ? 'Rechazado por Técnico' : 
+                            data.status == 'F' ? 'Finalizado' : 'Rechazado por Cliente'
                         }}
                     </b-tag>
                 </b-taglist>
@@ -108,6 +114,11 @@ import global from "@/config/global.js";
                     this.isImg = true;
                 }
                 
+            },
+
+            convertDate(date){
+                let temp = date.split('-')
+                return `${temp[2]}-${temp[1]}-${temp[0]}`
             }
 
 

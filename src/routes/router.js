@@ -19,6 +19,7 @@ import BillForClient from '@/components/views/BillForClient'
 
 //Templates
 import ReportTemp from '@/components/templates/Report'
+import Bill from '@/components/templates/Bill'
 
 import NProgress from 'nprogress'
 
@@ -57,6 +58,17 @@ const router = new Router({
       path: '/reportemp/:nro',
       name: 'reportemp',
       component: ReportTemp,
+      meta: {
+        isAuth: false,
+        requiredRol: false,
+        requiredAuth: false
+      },
+      props: true
+    },
+    {
+      path: '/bill/:nro',
+      name: 'bill',
+      component: Bill,
       meta: {
         isAuth: false,
         requiredRol: false,

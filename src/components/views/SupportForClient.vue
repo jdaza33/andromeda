@@ -32,6 +32,10 @@
         <b-modal :active.sync="isComponentModalDetailsSupportActive" has-modal-card :width="960">
             <modal-details-support :dataSupport="data" :nroSupport="nroSupport"></modal-details-support>
         </b-modal>
+
+        <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
+            <modal-details-client :idClient="idClient"></modal-details-client>
+        </b-modal>
         <!--End Modals-->
 
         <b-table
@@ -53,27 +57,16 @@
             :default-sort-direction="defaultSortDirection">
 
             <template slot-scope="props">
-                <!--<b-table-column field="nro" label="Nro" width="40" centered numeric sortable>
-                    {{ props.row.nro }}
-                </b-table-column>-->
 
-                <b-table-column field="date" label="Fecha" centered sortable>
+                <b-table-column field="date" label="Creado" centered sortable>
                     <span class="tag is-primary">
-                        {{ props.row.createdAt.substring(0, 10) }}
+                        {{ convertDate(props.row.createdAt.substring(0, 10)) }}
                     </span>
                 </b-table-column>
 
                 <b-table-column field="issue" label="Asunto" centered sortable>
                     {{ props.row.issue }}
                 </b-table-column>
-
-                <!--<b-table-column field="description" label="Descripción" centered sortable>
-                    {{ props.row.description }}
-                </b-table-column>-->
-
-                <!--<b-table-column field="image" label="Imagenes" centered sortable>
-                    {{ props.row.images }}
-                </b-table-column>-->
 
                  <b-table-column field="assigned" label="Asignado" centered sortable>
                     <!--{{ clients._id == props.row.id_client ? clients.name : 'n/a' }}-->
@@ -84,7 +77,11 @@
                         </span>
                     </a>
                     <div v-else>
-                        n/a
+                        <a class="button is-danger is-small">
+                            <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                            </span>
+                        </a>
                     </div>
                     
                 </b-table-column>
@@ -93,12 +90,14 @@
                     <b-tag 
                     :type="
                         props.row.status == 'P' ? 'is-warning' : 
-                        props.row.status == 'A' ? 'is-success' : 
-                        props.row.status == 'R' ? 'is-danger' : 'is-dark' ">
+                        props.row.status == 'A' ? 'is-info' : 
+                        props.row.status == 'R' ? 'is-danger' : 
+                        props.row.status == 'F' ? 'is-success' : 'is-dark' ">
 
                         {{ props.row.status == 'P' ? 'Pendiente' : 
                         props.row.status == 'A' ? 'Aprobado' : 
-                        props.row.status == 'R' ? 'Rechazado' : 'Cancelado' }}
+                        props.row.status == 'R' ? 'Rechazado por Técnico' :
+                        props.row.status == 'F' ? 'Finalizada' : 'Rechazado por Cliente' }}
                         
                         </b-tag>
                 </b-table-column>
@@ -111,12 +110,6 @@
                     </a>
                 </b-table-column>
 
-                <!--<b-table-column label="Gender" sortable>
-                    <b-icon pack="fas"
-                        :icon="props.row.gender === 'Male' ? 'mars' : 'venus'">
-                    </b-icon>
-                    {{ props.row.gender }}
-                </b-table-column>-->
             </template>
 
             <template slot="empty">
@@ -154,6 +147,8 @@ export default {
     return {
       isComponentModalCreateSupportActive: false,
       isComponentModalDetailsSupportActive: false,
+      isComponentModalDetailsClientActive: false,
+      idClient: '',
       nroSupport: '',
 
       global: global.text,
@@ -246,6 +241,11 @@ export default {
 
     },
 
+    loadDetailsClient(idClient){
+        this.idClient = idClient;
+        this.isComponentModalDetailsClientActive = true;
+    },
+
     cancel(){
 
         //TODO 
@@ -288,9 +288,11 @@ export default {
                 }
             })
         }
-        
+    },
 
-        
+    convertDate(date){
+        let temp = date.split('-')
+        return `${temp[2]}-${temp[1]}-${temp[0]}`
     }
 
   },

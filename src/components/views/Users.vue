@@ -73,7 +73,7 @@
 
                 <b-table-column field="date" label="Creado" centered sortable>
                     <span class="tag is-info">
-                        {{ props.row.createdAt.substring(0, 10) }}
+                        {{ convertDate(props.row.createdAt.substring(0, 10)) }}
                     </span>
                 </b-table-column>
 
@@ -282,6 +282,11 @@ export default {
             })
         }
         
+    },
+
+    convertDate(date){
+        let temp = date.split('-')
+        return `${temp[2]}-${temp[1]}-${temp[0]}`
     }
 
   },

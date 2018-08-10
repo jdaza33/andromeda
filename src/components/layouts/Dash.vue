@@ -106,6 +106,7 @@ BusEvent.$on('getInfopersonal', function (aux) {
 //Components
 import ModalUserData from "../views/ModalUserData.vue";
 
+
 export default {
   data() {
     return {
@@ -404,5 +405,9 @@ hr {
   background-color: black;
   opacity: 0.3;
 }
+
 </style>
+
+
+
 

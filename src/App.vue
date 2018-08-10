@@ -59,5 +59,19 @@
   @import "~buefy/src/scss/buefy";
 </style>
 
+<style> 
+.loading-overlay .loading-background {
+      background: #4f93ed;
+  }
+
+.loading-overlay.is-full-page .loading-icon:after {
+    top: calc(50% - 2.5em);
+    left: calc(50% - 2.5em);
+    width: 5em;
+    height: 5em;
+}
+</style>
+
+
 
 

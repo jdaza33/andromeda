@@ -6,6 +6,7 @@ import notify from 'vue-notification'
 import logger from 'vuejs-logger'
 import vueEventCalendar from 'vue-event-calendar'
 import VueHtml2Canvas from 'vue-html2canvas'
+import VueTheMask from 'vue-the-mask'
 
 
 //Calendar
@@ -31,6 +32,7 @@ Vue.use(VueCookie)
 Vue.use(notify)
 Vue.use(Buefy)
 Vue.use(VueHtml2Canvas)
+Vue.use(VueTheMask)
 
 //Calendar
 Vue.use(vueEventCalendar, { locale: 'en' }) 
