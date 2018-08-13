@@ -1,8 +1,11 @@
 <template>
     <div>
+        <br>
+        <div class="center">
+            <button class="button is-outlined is-rounded is-primary" type="button" @click="showPdf()">Imprimir</button>
+        </div>
         <div class="master">
             <div class="carta" ref="pdf">
-
                 <p class="title is-3 center">Reporte de Soporte</p>
                 
                 <br>
@@ -37,7 +40,9 @@
                         </b-table-column>
 
                         <b-table-column field="details" label="Detalles" centered>
-                            {{ props.row.details }}
+                            <p><strong>Nro. de Serie: </strong>{{props.row.nro_serie}}</p>
+                            <p><strong>Marca: </strong>{{props.row.make}}</p>
+                            <p><strong>Modelo: </strong>{{props.row.model}}</p>
                         </b-table-column>
 
                         <b-table-column field="description" label="Descripción" centered>
@@ -104,7 +109,7 @@
 
 import jsPDF from 'jspdf';
 import axios from "@/config/axios.js";
-import { setTimeout } from 'timers';
+//import { setTimeout } from 'timers';
 
 export default {
     data() {
@@ -137,10 +142,10 @@ export default {
 
     methods: {
         
-        async showPdf(este){
+        async showPdf(){
             
-            setTimeout(async function () {
-                este.output = await este.$html2canvas(este.$refs.pdf, {type: 'dataURL'});
+            //setTimeout(async function () {
+                this.output = await this.$html2canvas(this.$refs.pdf, {type: 'dataURL'});
 
                 let doc = new jsPDF();
 
@@ -148,13 +153,13 @@ export default {
                     'width': 120
                 });*/
 
-                doc.addImage(este.output, 'JPEG', 25, 15);
+                doc.addImage(this.output, 'JPEG', 25, 15);
                 doc.save('reporte.pdf');
 
                 //doc.autoPrint();
                 //window.open(doc.output('bloburl'), '_blank');
                 
-            }, 3000);
+            //}, 3000);
 
             //setTimeout(window.close(), 5000);
             
@@ -250,7 +255,7 @@ export default {
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.showPdf(this);
+            //this.showPdf(this);
         })
     }
 }

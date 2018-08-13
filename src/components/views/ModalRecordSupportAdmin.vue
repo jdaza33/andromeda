@@ -12,30 +12,66 @@
             <b-tab-item label="Crear">
 
                 <div class="createRecord">
-                    <p class="title is-5">Crear nueva actividad: </p>
+                    <p class="title is-5 has-text-centered">Crear nueva actividad: </p>
 
-                    <b-field>
-                        <b-datepicker
-                            placeholder="Fecha"
-                            icon="calendar-alt"
-                            icon-pack="fas"
-                            rounded
-                            v-model="activity.date">
-                        </b-datepicker>
+                    <b-field group-multiline>
+                        <b-field>
+                            <b-datepicker
+                                placeholder="Fecha"
+                                icon="calendar-alt"
+                                icon-pack="fas"
+                                rounded
+                                v-model="activity.date">
+                            </b-datepicker>
+                        </b-field>
+
+                        <b-field>
+                            <b-input placeholder="Titulo"
+                                type="text"
+                                icon-pack="fas"
+                                icon="space-shuttle"
+                                maxlength="20"
+                                rounded
+                                v-model="activity.title">
+                            </b-input>
+                        </b-field>
                     </b-field>
 
-                    <b-field>
-                        <b-input placeholder="Titulo"
-                            type="text"
-                            icon-pack="fas"
-                            icon="space-shuttle"
-                            maxlength="20"
-                            rounded
-                            v-model="activity.title">
-                        </b-input>
+                    <b-field group-multiline>
+                        <b-field>
+                            <b-input placeholder="Nro. de Serie"
+                                type="text"
+                                icon-pack="fas"
+                                icon="fingerprint"
+                                minlength="10"
+                                maxlength="30"
+                                rounded
+                                v-model="activity.nro_serie">
+                            </b-input>
+                        </b-field>
+                        <b-field>
+                            <b-input placeholder="Marca"
+                                type="text"
+                                icon-pack="fas"
+                                icon="desktop"
+                                maxlength="20"
+                                rounded
+                                v-model="activity.make">
+                            </b-input>
+                        </b-field>
+                        <b-field>
+                            <b-input placeholder="Modelo"
+                                type="text"
+                                icon-pack="fas"
+                                icon="server"
+                                maxlength="20"
+                                rounded
+                                v-model="activity.model">
+                            </b-input>
+                        </b-field>
                     </b-field>
 
-                    <b-field>
+                    <!--<b-field>
                         <b-input :placeholder="global.title.details"
                             type="text"
                             icon-pack="fas"
@@ -44,7 +80,7 @@
                             rounded
                             v-model="activity.details">
                         </b-input>
-                    </b-field>
+                    </b-field>-->
 
                     <b-field>
                         <b-input :placeholder="global.input.description"
@@ -130,7 +166,7 @@
                                 <strong>Titulo: </strong>
                                 <p>{{item.title}}</p>
                                 <strong>Detalles: </strong>
-                                <p>{{item.details}}</p>
+                                <p>Nro. de Serie: {{item.nro_serie}} | Marca: {{item.make}} | Modelo: {{item.model}}</p>
                                 <strong>Descripción: </strong>
                                 <p>{{item.description}}</p>
                             </div>
@@ -195,7 +231,9 @@ export default {
             date: '', 
             nro_activity: '', 
             title: '', 
-            details: '', 
+            nro_serie: '', 
+            model: '', 
+            make: '', 
             description: '', 
             hours_service: ''
             },
@@ -283,7 +321,10 @@ export default {
         this.activity.date = '',
         this.activity.nro_activity = '',
         this.activity.title = '',
-        this.activity.details = '',
+        //this.activity.details = '',
+        this.activity.nro_Serie = '',
+        this.activity.model = '',
+        this.activity.make = '',
         this.activity.description = '',
         this.activity.hours_service = '',
         this.hours = ''
@@ -323,6 +364,7 @@ export default {
     justify-content: center;
     align-items: center;
 }
+
 </style>
 
 

@@ -28,6 +28,7 @@
                     <div class="content">
                         <p><strong>Titulo: </strong> {{item.title}}</p>
                         <p><strong>Descripción: </strong>{{item.description}}</p>
+                        <p><strong>Tipo de Soporte: </strong>{{item.hours_service == 'Servicio' ? item.hours_service : 'Horas'}}</p>
                     </div>
                     <div class="columns">
                         <div class="column is-6">
@@ -35,11 +36,12 @@
                                 <b-input placeholder="Cantidad: "
                                     type="number"
                                     icon-pack="fas"
-                                    icon="info-circle"
+                                    icon="sort-numeric-up"
                                     maxlength="2"
                                     @change="changePrice"
                                     rounded
-                                    v-model="bill.details[index].cant">
+                                    v-model="bill.details[index].cant"
+                                    disabled>
                                 </b-input>
                             </b-field>
                         </div>
@@ -48,7 +50,7 @@
                                 <b-input placeholder="Precio Unitario: "
                                     type="number"
                                     icon-pack="fas"
-                                    icon="info-circle"
+                                    icon="money-bill-alt"
                                     maxlength="2"
                                     rounded
                                     v-model="bill.details[index].unit_price">
@@ -167,7 +169,7 @@ export default {
 
                 for (let i in this.record.activities){
                     this.bill.details.push({
-                        cant: 0,
+                        cant: this.record.activities[i].hours_service == 'Servicio' ? 1 : parseInt(this.record.activities[i].hours_service),
                         description: this.record.activities[i].title,
                         unit_price: 0,
                         total: 0

@@ -94,7 +94,7 @@
                 </b-table-column>
 
                 <b-table-column field="pdf" label="PDF" centered sortable>
-                    <a class="button is-warning is-small" @click="showPdf()">
+                    <a class="button is-warning is-small" @click="showPdf(props.row.nro)">
                         <span class="icon is-small">
                         <i class="fas fa-file-pdf"></i>
                         </span>
@@ -131,6 +131,7 @@ import ModalDetailsClient from '@/components/views/ModalDetailsClient'
 
 //Templates
 import Breadcrub from "@/components/templates/Breadcrub.vue";
+import Bill from "@/components/templates/Bill.vue";
 
 export default {
   data() {
@@ -170,7 +171,8 @@ export default {
 
   components: {
       ModalDetailsClient,
-      Breadcrub
+      Breadcrub,
+      Bill
   },
 
   methods: {
@@ -215,10 +217,10 @@ export default {
     },
 
 
-    showPdf(){
+    showPdf(nro){
 
-        /*let routeData = this.$router.resolve({path: `/reportemp/${details}`});
-        window.open(routeData.href, '_blank');*/
+        let routeData = this.$router.resolve({path: `/bill/${nro}`});
+        window.open(routeData.href, '_blank');
     }
 
   },
