@@ -46,6 +46,9 @@
         <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
             <modal-details-client :idClient="idClient"></modal-details-client>
         </b-modal>
+        <b-modal :active.sync="isComponentModalPayForClientActive" has-modal-card :width="960">
+            <modal-pay-for-client @hijo:change="listenSon" :bill="billData"></modal-pay-for-client>
+        </b-modal>
         <!--End Modals-->
 
         <b-table
@@ -68,10 +71,18 @@
 
             <template slot-scope="props">
                 
-                <b-table-column field="nro" label="Nro." centered sortable>
+                <b-table-column field="nro" label="Nro. Factura" centered sortable>
                     <span class="tag is-success">
                         {{props.row.nro}}
                     </span>
+                </b-table-column>
+
+                <b-table-column field="pdf" label="PDF Reporte" centered sortable>
+                    <a class="button is-warning is-small" @click="showReport(props.row.nro_report)">
+                        <span class="icon is-small">
+                        <i class="fas fa-file-pdf"></i>
+                        </span>
+                    </a>
                 </b-table-column>
 
                 <b-table-column field="SubTotal" label="SubTotal" centered sortable>
@@ -93,8 +104,8 @@
                     </b-tag>
                 </b-table-column>
 
-                <b-table-column field="pdf" label="PDF" centered sortable>
-                    <a class="button is-warning is-small" @click="showPdf(props.row.nro)">
+                <b-table-column field="pdf" label="PDF Factura" centered sortable>
+                    <a class="button is-warning is-small" @click="showBillPdf(props.row.nro)">
                         <span class="icon is-small">
                         <i class="fas fa-file-pdf"></i>
                         </span>
@@ -128,6 +139,7 @@ import axios from "@/config/axios.js";
 
 //Components
 import ModalDetailsClient from '@/components/views/ModalDetailsClient'
+import ModalPayForClient from '@/components/views/ModalPayForClient'
 
 //Templates
 import Breadcrub from "@/components/templates/Breadcrub.vue";
@@ -138,6 +150,7 @@ export default {
     return {
 
         isComponentModalDetailsClientActive: false,
+        isComponentModalPayForClientActive: false,
 
         global: global.text,
 
@@ -164,7 +177,9 @@ export default {
 
         billAll: '',
         billYes: [],
-        billNot: []
+        billNot: [],
+
+        billData: ''
 
     };
   },
@@ -172,7 +187,8 @@ export default {
   components: {
       ModalDetailsClient,
       Breadcrub,
-      Bill
+      Bill,
+      ModalPayForClient
   },
 
   methods: {
@@ -217,10 +233,69 @@ export default {
     },
 
 
-    showPdf(nro){
+    showBillPdf(nro){
 
         let routeData = this.$router.resolve({path: `/bill/${nro}`});
         window.open(routeData.href, '_blank');
+    },
+
+    async showReport(nro){
+
+        let data_report = ''
+
+        await axios
+        .get(`/report/nro/${nro}`, {
+            headers: { Authorization: "bearer " + this.$cookie.get("token") }
+        })
+        .then(res => {
+            if (res.data.res) {
+                data_report = res.data.report[0]
+            }
+        })
+        .catch(err => {
+            alert(err);
+        });
+
+        let routeData = this.$router.resolve({path: `/reportemp/${data_report.nro_support}|${data_report.total_hours}|${data_report.total_service}`});
+        window.open(routeData.href, '_blank');
+    },
+
+    pay(){
+
+        //TODO 
+        /*
+        Quitar el codigo duro que tengo aqui jeje
+        */
+        if(this.selected==''){
+            this.$toast.open({
+                message: 'Seleccione una fila',
+                type: 'is-warning'
+            })
+        }else{
+            if(this.selected.status == 'S'){
+                this.$toast.open({
+                    message: 'La factura ya fue pagada',
+                    type: 'is-warning'
+                })
+            }else{
+                
+                this.$dialog.confirm({
+                    title: 'Pagar Factura',
+                    message: `¿Estás seguro de pagar la factura nro. #${this.selected.nro}?`,
+                    confirmText: 'Pagar',
+                    type: 'is-success',
+                    hasIcon: true,
+                    icon: 'dollar-sign',
+                    iconPack: 'fas',
+                    onConfirm: async () => {
+                        this.billData = this.selected
+                        this.isComponentModalPayForClientActive = true
+                    }
+                })
+            }
+            
+        }
+        
     }
 
   },

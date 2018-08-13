@@ -25,4 +25,16 @@ export default {
     width: 50%;
     padding: 1px 5px;
 }
+@media screen and (min-width: 768px){
+.__vev_calendar-wrapper .events-wrapper {
+    width: 50%;
+    background-color: #6200ff;
+    color: #fff;
+    padding: 40px 45px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+}
+}
 </style>

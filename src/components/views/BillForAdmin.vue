@@ -4,12 +4,12 @@
         <breadcrub name="Gestión de Facturas" icon="dollar-sign"/>
 
         <p class="buttons">
-            <a class="button is-warning is-small is-rounded" @click="notify()">
+            <!--<a class="button is-warning is-small is-rounded" @click="notify()">
                 <span>Notificar</span>
                 <span class="icon is-small">
                 <i class="fas fa-bell"></i>
                 </span>
-            </a>
+            </a>-->
             <a class="button is-info is-small is-rounded" @click="deselect()">
                 <span>{{global.button.deselect}}</span>
                 <span class="icon is-small">
@@ -45,6 +45,9 @@
         <!--Modals-->
         <b-modal :active.sync="isComponentModalDetailsClientActive" has-modal-card :width="960">
             <modal-details-client :idClient="idClient"></modal-details-client>
+        </b-modal>
+        <b-modal :active.sync="isComponentModalDetailsPaymentActive" has-modal-card :width="960">
+            <modal-details-payment :idBill="billShow"></modal-details-payment>
         </b-modal>
         <!--End Modals-->
 
@@ -109,6 +112,20 @@
                     </a>
                 </b-table-column>
 
+                <b-table-column field="pdf" label="Comprobante" centered sortable>
+                    <a class="button is-success is-small" @click="showPayment(props.row._id)"
+                    v-if="props.row.status == 'S'">
+                        <span class="icon is-small">
+                        <i class="fas fa-file-pdf"></i>
+                        </span>
+                    </a>
+                    <a class="button is-dark is-small" v-if="props.row.status == 'N'">
+                        <span class="icon is-small">
+                        <i class="fas fa-file-pdf"></i>
+                        </span>
+                    </a>
+                </b-table-column>
+
             </template>
 
             <template slot="empty">
@@ -136,6 +153,8 @@ import axios from "@/config/axios.js";
 
 //Components
 import ModalDetailsClient from '@/components/views/ModalDetailsClient'
+import ModalDetailsPayment from '@/components/views/ModalDetailsPayment'
+
 
 //Templates
 import Breadcrub from "@/components/templates/Breadcrub.vue";
@@ -145,6 +164,7 @@ export default {
     return {
 
         isComponentModalDetailsClientActive: false,
+        isComponentModalDetailsPaymentActive: false,
 
         global: global.text,
 
@@ -171,14 +191,17 @@ export default {
 
         billAll: '',
         billYes: [],
-        billNot: []
+        billNot: [],
+
+        billShow: ''
 
     };
   },
 
   components: {
       ModalDetailsClient,
-      Breadcrub
+      Breadcrub,
+      ModalDetailsPayment
   },
 
   methods: {
@@ -219,6 +242,7 @@ export default {
         .catch(err => {
             alert(err);
         });
+
         
     },
 
@@ -227,6 +251,11 @@ export default {
 
         /*let routeData = this.$router.resolve({path: `/reportemp/${details}`});
         window.open(routeData.href, '_blank');*/
+    },
+
+    showPayment(idBill){
+        this.billShow = idBill
+        this.isComponentModalDetailsPaymentActive = true
     }
 
   },

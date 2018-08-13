@@ -8,7 +8,7 @@
             <div class="carta" ref="pdf">
                 <p class="title is-3 center">Factura</p>
 
-                <div class="end">
+                <div class="">
                     <p class="max">
                         <strong class="title is-5 max">Fecha: </strong>
                         {{date()}}
@@ -82,19 +82,15 @@
                 <br>
                 <br>
 
-                <div class="columns">
-                    <div class="column is-6">
-                        <p> 
-                            <strong class="title is-6">Cantidad de Horas Técnicas: </strong> 
-                        </p>
-                    </div>
-
-                    <div class="column is-6 end">
-                        <p> 
-                            <strong class="title is-6">Servicios Realizados: </strong> 
-                        </p>
-                    </div>
-                </div>
+                <p class="end"> 
+                    <strong class="title is-6">Sub-Total: {{bill.sub_total}} </strong> 
+                </p>
+                <p class="end"> 
+                    <strong class="title is-6">IVA: {{bill.iva}} </strong> 
+                </p>
+                <p class="end"> 
+                    <strong class="title is-6">Total: {{bill.total_amount}} </strong> 
+                </p>
 
             </div>
         </div>

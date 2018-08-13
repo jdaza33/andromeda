@@ -54,7 +54,9 @@ const global_es = {
     success: {
         'S001': 'El Usuario ha sido creado con exito',
         'S002': 'Solicitud creada con exito',
-        'S003': 'Datos guardados'
+        'S003': 'Datos guardados',
+        'S004': 'Factura Pagada'
+
     },
 
     warn: {
