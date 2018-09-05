@@ -105,7 +105,7 @@
                 </b-table-column>
 
                 <b-table-column field="pdf" label="PDF" centered sortable>
-                    <a class="button is-warning is-small" @click="showPdf()">
+                    <a class="button is-warning is-small" @click="showBillPdf(props.row.nro)">
                         <span class="icon is-small">
                         <i class="fas fa-file-pdf"></i>
                         </span>
@@ -247,10 +247,10 @@ export default {
     },
 
 
-    showPdf(){
+    showBillPdf(nro){
 
-        /*let routeData = this.$router.resolve({path: `/reportemp/${details}`});
-        window.open(routeData.href, '_blank');*/
+        let routeData = this.$router.resolve({path: `/bill/${nro}`});
+        window.open(routeData.href, '_blank');
     },
 
     showPayment(idBill){

@@ -16,6 +16,7 @@ import Users from '@/components/views/Users'
 import Calendar from '@/components/views/Calendar'
 import BillForAdmin from '@/components/views/BillForAdmin'
 import BillForClient from '@/components/views/BillForClient'
+import HomeForAll from '@/components/views/HomeForAll'
 
 //Templates
 import ReportTemp from '@/components/templates/Report'
@@ -143,6 +144,15 @@ const router = new Router({
           path: 'billclient',
           name: 'billclient',
           component: BillForClient,
+          meta: {
+            requiredRol: true,
+            requiredAuth: true
+          }
+        },
+        {
+          path: 'homeforall',
+          name: 'homeforall',
+          component: HomeForAll,
           meta: {
             requiredRol: true,
             requiredAuth: true

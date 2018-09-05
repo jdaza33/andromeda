@@ -35,7 +35,7 @@ Vue.use(VueHtml2Canvas)
 Vue.use(VueTheMask)
 
 //Calendar
-Vue.use(vueEventCalendar, { locale: 'en' }) 
+Vue.use(vueEventCalendar, { locale: 'en', color: '#4f93ed'}) 
 
 const loggerOptions = {
   // optional : defaults to true if not specified

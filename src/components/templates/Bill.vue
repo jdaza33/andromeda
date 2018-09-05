@@ -9,25 +9,25 @@
                 <p class="title is-3 center">Factura</p>
 
                 <div class="">
-                    <p class="max">
-                        <strong class="title is-5 max">Fecha: </strong>
+                    <p class="">
+                        <strong class="title is-6">Fecha: </strong>
                         {{date()}}
                     </p>
                 </div>
                 <br>
                 <div class="columns">
                     <div class="column is-6">
-                        <strong class="title is-5 max">Cliente: </strong>
-                        <p class="max">{{client.name + ' ' + client.lastname}}</p>
-                        <strong class="title is-5 max">Dirección: </strong>
-                        <p class="max">{{client.address.country + ', ' + client.address.state + ', ' + client.address.location + ', ' + client.address.description}}</p>
+                        <strong class="title is-6">Cliente: </strong>
+                        <p class="">{{client.name + ' ' + client.lastname}}</p>
+                        <strong class="title is-6">Dirección: </strong>
+                        <p class="">{{client.address.country + ', ' + client.address.state + ', ' + client.address.location + ', ' + client.address.description}}</p>
                     </div>
 
                     <div class="column is-6">
-                        <strong class="title is-5 max">RIF/C.I: </strong>
-                        <p class="max">{{client.nit}}</p>
-                        <strong class="title is-5 max">Telf: </strong>
-                        <p class="max">{{client.phone}}</p>
+                        <strong class="title is-6">RIF/C.I: </strong>
+                        <p class="">{{client.nit}}</p>
+                        <strong class="title is-6">Telf: </strong>
+                        <p class="">{{client.phone}}</p>
                     </div>
                 </div>
 

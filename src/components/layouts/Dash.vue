@@ -123,7 +123,7 @@ export default {
       api: process.env.VUE_APP_API_URL,
 
       items: [
-        { title: "Home", icon: "home", role: true, type: "ALL", url: "home" },
+        { title: "Home", icon: "home", role: true, type: "ALL", url: "homeforall" },
         {
           title: "Usuarios",
           icon: "users",
@@ -324,6 +324,12 @@ export default {
   },
   components: {
     ModalUserData
+  },
+
+  mounted: function () {
+      this.$nextTick(function () {
+          this.go('users');
+      })
   }
 };
 </script>
