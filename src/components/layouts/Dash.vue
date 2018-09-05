@@ -328,7 +328,7 @@ export default {
 
   mounted: function () {
       this.$nextTick(function () {
-          this.go('users');
+          //this.go('users');
       })
   }
 };
